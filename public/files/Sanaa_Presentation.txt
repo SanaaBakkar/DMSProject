@@ -1,0 +1,46 @@
+Présentation:
+ Good morning/afternoon/evening ladies and gentlemen, Thank you for being here today.
+ I'm Sanaa BAKKAR from Morocco.
+
+Slide 3: 
+Rating in general case, is used to provide indication of consumer opinions and 
+also to ameliorate the productivity of a company.is a method that requires the rater to 
+assign a value, sometimes numeric, to the rated object, as a measure of some rated attribute
+Ratings have huge influence on the price and demand for certain products.
+
+Slide 4:
+In our case, we worked for a company which need to evaluate their products compared to different
+departments and that from different criterea of each product. 
+
+Slide 7:
+Here we will present The planning with Gantt Chart and the the Conception using different
+ diagram : use Case diagram, class diagram and sequence diagrams.
+
+Slide 8:
+During our internship, we worked with the following planning insisting on giving 
+a time to discover the project, preparng a site structure, doing implementation
+and then testing our application. Finally, to keep track of all aspects in our 
+application and to make information easily accessible we made a documentation as 
+the latest task.
+
+
+Slide 9: 
+Moving to the Conception and exactly to Class Diagram,it explain that 
+Our application consist to offer to the user of each department the possibility to 
+rate the products of the company. Only the user with the admin role is allowed to 
+create a rating list and to manage the products.
+
+Slide 13:
+Here we pass to The implementation of our project and the technology used in
+
+Slide 14: 
+On the one hand, we used for the front end of our application:HTML5, CSS, JavaScript,
+ Boostrap and Font awesome to create the stars of our rating system and the footer.
+
+Slide 15: 
+on the other hand, in the back end we used php as a server side scripting 
+language suited for web based technologies and it can be embedded into HTML, is a 
+"Server side HTML embedded scripting language",A good benefit of using PHP is that 
+it can interact with many different database languages including MySQL
+
+

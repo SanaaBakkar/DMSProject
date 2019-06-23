@@ -1,0 +1,106 @@
+Liste des évolutions
+--- Wampserver 3.1.3
+- Correction vulnérabilité (CRSF) trouvée par Vipin Chaudhary page add_vhost.php - L'ID CVE est CVE-2018-8817
+- Correction service MariaDB à la place de MySQL (Réinstaller les services)
+- Vérifier les Listen Port au changement de version Apache
+- Remplacements de | FIND par | FINDSTR en ligne de commande Windows
+- Correction erreurs typographiques
+Pour utiliser MariaDB lire le fichier mariadb_support.txt
+Mise à jour cumulative 3.0.1 à 3.1.3 Peut être réinstallée pour réparer des fichiers intempestivement modifiés.
+
+--- Wampserver 3.1.2
+- Correction d'une vulnérabilité de sécurité trouvée par Vipin Chaudhary dans la page add_vhost.php - L'ID CVE est CVE-2018-8732.
+  Cross site scripting (XSS) même si le serveur et l'hôte local utilisent la directive Apache "Require local".
+- Correction bug : localhost sur port différent de 80
+- Correction bug : Changement version PHP CLI si une seule version PHP
+- Outils : Réinstaller tous les services
+- Outils : Possibilité d'ajouter des Listen Port à Apache
+- Outils : Amélioration de Vérifier compilateurs...
+- Possibilité de prompt personnalisés pour les consoles MySQL et MariaDB
+- Possibilité de choisir l'utilisateur pour les consoles MySQL et MariaDB
+
+--- Wampserver 3.1.1
+- Support de PHP 7.2.0
+- Support de PHP 7.2.0+ pour extension=dba à la place de extension=php_dba.dll
+- Vérification présence fichiers dll pour zend_extensions
+- Correction bug dans vérification VirtualHost ServerName
+- Outil pour inverser le SGBD par défaut (MySQL <-> MariaDB)
+- Outil pour changer la version CLI de PHP
+- Fenêtre de commande sur les dossier bin Apache, MySQL et MariaDB
+- Choix affichage PhpMyAdmin et/ou Adminer dans menu
+
+--- Wampserver 3.1.0
+- Pas d'appels PhpMyAdmin ou Adminer si pas Mysql ni MariaDB
+- Correction bug : check symlinks avec strtolower
+- Versions Apache, PHP, MySQL, MariaDB, PhpMyAdmin dans menus
+- Support de sql-mode pour MariaDB
+- Correction bug remplacer mysqlService par mariadbService
+- php.exe pour refreshSymlink.php à la place de php-win.exe
+
+--- Wampserver 3.0.9
+- Correction Bug fichier scripts/testPort.php
+- Correction Bug replacement de
+  $range = '127.0.0.2-127.255.255.255'; par $range = '127.0.0.1-127.255.255.255';
+- Support des extensions zend_extension On/Off
+- État des services RUNNING or STOPPED
+- Clarification des explications ServerName
+
+--- Wampserver 3.0.8
+- Correction Bug : Changement version MariaDB
+- Possibilité de désactiver MySQL
+- Possibilité de désactiver MariaDB
+- Possibilité de fonctionner uniquement avec Apache et PHP, sans SGBD.
+- Possibilité d'utiliser MariaDB à la place de MySQL
+
+--- Wampserver 3.0.7
+- Possibilité de plusieurs Apache listen ports
+- Vérifie VirtualHost avec port autre que 80
+- Le module Apache authz_host_module ne peut pas être supprimé
+- Ajouté paramètre PHP max_input_vars
+- Ajouté Menu item Ajouter un VirtualHost
+- Ajoutés items de menu liens sur les Documentations
+- Correction d'erreurs de frappe
+- Support de MariaDB
+--- Wampserver 3.0.6
+- Ajouté paramètre NotCheckVirtualHost
+- Test des liens symboliques
+- Modifications possibles des directives de php.ini comme date.timezone, memory_limit, max_execution_time, etc. par les sous-menus Wampmanager avec possibilité de personnaliser les valeurs- Add parameter NotCheckVirtualHost
+- Possibilité de sous-menu Alias
+- Possibilité de modifier certains paramètres MySQL
+- Possibilité de supprimer les versions Apache, PHP and MySQL non utilisées
+- Nouveau fichier wamp\bin\apache\apache2.4.xy\wampdefineapache.conf contenant les variables (Define) Apache avec la même syntaxe qu'un fichier ini.
+- Vérification des variables Apache dans DocumentRoot et Directory.
+--- Wampserver 3.0.5
+- Ajouter édition fichier httpd-vhosts.conf dans le sous-menu Apache
+- Ajouter Test ordre DNS dans le sous-menu Clic-Droit Outils
+- Ajouter 57 pour les liens symboliques à partir de PHP 7.0.6
+- Tableau $phpParamsNotOnOff pour paramètres PHP qui sont ni on ni off
+- Ajouter paramètre pour ne pas tester les ServerName dupliqués
+- Possibilité de supprimer des VirtualHost
+- Possibilité de copier les VirtualHost au changement de version Apache
+- Possibilité de VirtualHost par IP
+
+--- Wampserver 3.0.4
+- Mises à jour et ajout de fichiers de langue
+- Possibilités de copier le résultats des outils dans le presse-papier
+- Clic-Droit Rafraîchir reconstruit aussi les liens symboliques
+- Corrections de petits défauts
+
+--- Wampserver 3.0.3
+- Affichage des versions utilisées dans A propos
+- Clé de registre Uninstall renommée {wampserver32}ou {wampserver64}
+
+--- Wampserver 3.0.2
+Correction bug dans le changement de port pour MySQL qui ne fonctionnait pas avec PHP 7
+--- Wampserver 3.0.1
+- Fichiers de langue séparés pour index.php et add_vhost.php
+- Les pages d'accueil et add_vhost utilisent la langue définie dans Wampmanager si le fichier afférent existe dans wamp\www\wamplangues\
+- Support de Apache 2.2.x
+- Test du nom des services et modifications éventuelles des fichiers afférents.
+- Amélioration de certaines fonctions
+- Support de Edge pour Windows 10
+Pour choisir Edge comme navigateur par défaut, dans le fichier wamp/wampmanager.conf remplacer la définition du navigateur, par exemple :
+navigator ="J:/Com/Net/Firefox/firefox.exe"
+par
+navigator="Edge"
+Nota : Ne fonctionnera que pour Windows 10. Si vous choisissez Edge dans une autre version de Windows, c'est Internet Explorer qui sera utilisé.
