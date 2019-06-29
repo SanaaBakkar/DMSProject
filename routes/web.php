@@ -23,7 +23,7 @@ use App\Models\User;
 | contains the "web" middleware group. Now create something great!
 |
 */
-
+ 
 Route::get('/', function () {
     return view('welcome');
 });
@@ -32,12 +32,14 @@ Auth::routes();
 
 Route::get('/', 'HomeController@index')->name('home');
 
+Route::get('admin', 'HomeController@admin')->middleware('admin');
+
+
 /*Route::get('/upload','DocumentController@viewaDocuments');
 Route::post('/insert','DocumentController@upload');*/
 
 /******************** Document part ********************/
 
-Route::get('/showdocument', 'DocumentController@viewDocument');
 Route::get('/document', 'DocumentController@listDocuments');
 Route::get('upload','DocumentController@create');
 Route::post('upload','DocumentController@store');
@@ -45,6 +47,8 @@ Route::get('delete/{id}','DocumentController@deletefile');
 Route::get('detail/{id}','DocumentController@detailsfile');
 Route::get('update/{id}','DocumentController@update');
 Route::post('edit/{id}','DocumentController@edit');
+Route::get('visualize/{id}','DocumentController@viewdoc');
+
 
 /****************** Workflow part ********************/
 Route::get('Typeworkflow/{id}','WorkflowController@TypesWF');
@@ -64,10 +68,9 @@ Route::get('viewworkflow/{id}','WorkflowController@View_Workflow_detail');
 
 
 
-
-
-/****************** Task Part ***********************/
+/******************* Task Part ***********************/
 Route::get('/task','TaskController@Home');
+
 Route::get('/task/{id}','TaskController@DetailWorkflow');
 Route::post('/task/{id}','TaskController@Save');
 
@@ -82,19 +85,42 @@ Route::post('/CompletedTask/{id}','TaskController@DisableTask');
 
  
 
-/*Route::post('/task','TaskController@ActiveTasks');
-Route::get('/x',function()
-{
-			$User = Auth::User()->name;
-			echo $User;
-	    	$lists = DB::select("select count(*) from workflows where assign_to like '".$User."'");
-	    	return $lists;
+
+Route::get('/admin', 'AdminController@index');
+Route::get('/users', 'AdminController@ShowUsers');
+Route::get('/groups', 'AdminController@ShowGroups');
+
+Route::get('/alldocuments', 'AdminController@ShowDocuments');
+Route::get('/doctypes', 'AdminController@ShowDocType');
+Route::get('/SingleWF', 'AdminController@ShowSingleWF');
+Route::get('/GroupWF', 'AdminController@ShowGroupWF');
+Route::get('/ParallelWF', 'AdminController@ShowParallelWF');
+
+/*******Crud Operation: User ********/
+Route::get('/updateuser/{id}', 'AdminController@UpdateUser');
+Route::post('/edituser/{id}', 'AdminController@EditUser');
+Route::get('AddUser','AdminController@AddUser');
+Route::post('/saveuser','AdminController@SaveUser');
+Route::get('/deleteuser/{id}', 'AdminController@DeleteUser');
+
+/*******Crud Operation: Group ********/
+Route::post('/savegroup','AdminController@SaveGroup');
+Route::get('/updategroup/{id}', 'AdminController@UpdateGroup');
+Route::post('/editgroup/{id}', 'AdminController@EditGroup');
+Route::get('/deletegroup/{id}', 'AdminController@DeleteGroup');
 
 
-});*/
+/*******Crud Operation: Document ********/
+Route::get('/viewdoc/{id}', 'AdminController@ViewDetail');
+
+/*******Crud Operation: Type ********/
+Route::post('/savetype','AdminController@SaveType');
+Route::get('/updatetype/{id}', 'AdminController@UpdateType');
+Route::post('/edittype/{id}', 'AdminController@EditType');
+Route::get('/deletetype/{id}', 'AdminController@DeleteType');
+
+/*******View Workflow ********/
+Route::get('/ViewWF/{id}', 'AdminController@View_WF_Detail');
 
 
 
-
-Route::get('send', 'HomeController@sendNotification');
- 

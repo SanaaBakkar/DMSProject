@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use File;
 
 use App\EDocument;
 use App\Etypdoc;
@@ -59,27 +60,7 @@ class DocumentController extends Controller
 	
    }
 
-   /* public function showlistDocument()
-   {
-   	$documents = DB::table('edocument')->get();
-   	  return view('/document',['documents'=>$documents]);
-
-   }
-
- /*public function users()
-    {
-        $users = DB::select('select * from users ');
-
-        return view('/document', ['users' => $users]);
-    }
-
-public function labels()
-    {
-        $lbl = DB::select('select * from edocument ');
-        $labels=$con->query("$lbl");
-       $rowslbl = $labels->fetch();
-        return view('/document', ['rowslbl' => $rowslbl]);
-    }    */
+ 
     
     /**
     Upload document
@@ -146,14 +127,29 @@ public function labels()
     }
 
 
-
-
-
     public function detailsfile($id)
 
     {
           $documents=EDocument::find($id);
           return view('detailsfile',['documents'=>$documents]);          
+    }
+
+    public function viewdoc($id)
+    {       
+          $documents = EDocument::find($id);
+          $path = public_path().'/files/'.$documents->doc_name;
+          $ext =File::extension($path);
+              
+                if($ext=='pdf'){
+                    $content_types='application/pdf';
+                   }elseif ($ext=='doc') {
+                     $content_types='application/msword';  
+                   }elseif ($ext=='docx') {
+                     $content_types='application/vnd.openxmlformats-officedocument.wordprocessingml.document';
+                     }elseif ($ext=='jpeg') {
+                     $content_types='image/jpeg';  
+                   }
+      return response(file_get_contents($path),200)->header('Content-Type',$content_types);
     }
 
    public function deletefile($id)

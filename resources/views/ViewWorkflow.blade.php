@@ -53,7 +53,13 @@
    	  	</div><br>
    	  	
  			<b>More info</b><hr>
- 			<b>Send Email notification:</b>	<br> <br>
+ 			<b>Send Email notification:</b>
+							 				@if($WorkflowSingle->mail==1)
+							 					Yes
+							 				@else
+							 					No
+							 				@endif
+				<br> <br>
  			<b>History :</b><hr>
  			<table class="table table-sm" style="width: 80%;">
  				<thead class="thead-light" ">
