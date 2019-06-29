@@ -9,17 +9,7 @@
 
   <div class="dropdown-divider"></div>
 
-  <h6 class="dropdown-header">Due</h6>
-  <a class="dropdown-item" href="#">Today</a>
-  <a class="dropdown-item" href="#">Tomorrow</a>
-  <a class="dropdown-item" href="#">next 7 days</a>
-	
-  <div class="dropdown-divider"></div>
-
-  <h6 class="dropdown-header">Priority</h6>
-  <a class="dropdown-item" href="#">High</a>
-  <a class="dropdown-item" href="#">Medium</a>
-  <a class="dropdown-item" href="#">Low</a>
+  
 </div>
 
 

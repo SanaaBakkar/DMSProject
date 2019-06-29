@@ -41,6 +41,8 @@ Route::post('/insert','DocumentController@upload');*/
 /******************** Document part ********************/
 
 Route::get('/document', 'DocumentController@listDocuments');
+Route::get('/listdocuments', 'DocumentController@listDocuments');
+
 Route::get('upload','DocumentController@create');
 Route::post('upload','DocumentController@store');
 Route::get('delete/{id}','DocumentController@deletefile');
