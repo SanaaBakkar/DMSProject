@@ -9,7 +9,7 @@
           {{csrf_field()}}
         <div class="form-group">
             <label >Title</label>
-            <input type="text" class="form-control" style="width: 50%" value="{{ $documents->doc_name }}" name="doc_name"/>
+            <input type="text" class="form-control" style="width: 50%" value="{{ $documents->doc_name }}" name="doc_name" readonly />
             </div>
              <div class="form-group">
               <label >Description:</label><br>

@@ -8,7 +8,7 @@
      <tr>
           <td width="5%" align="left" class="subtitle_3"> </td>
           <td width="30%" align="left" class="subtitle_3"> 
-                <a class="list-group-item" href="{{url('document')}}"><i class="fa fa-list-ul" aria-hidden="true"></i>&nbsp; List of documents</a></td>
+                <a class="list-group-item" href="{{url('listdocuments')}}"><i class="fa fa-list-ul" aria-hidden="true"></i>&nbsp; List of documents</a></td>
           <td width="30%" align="left" class="subtitle_3">  <a class="list-group-item" href=" {{url('upload')}}"><i class="fa fa-plus" aria-hidden="true"></i>&nbsp; Add New document</a></td>
           <td width="30%" align="left" class="subtitle_3">  <a class="list-group-item" href="#"><i class="fa fa-book fa-fw" aria-hidden="true"></i>&nbsp; Compare documents</a></td>
           <td width="5%" align="left" class="subtitle_3"></td>
@@ -30,6 +30,12 @@
         </div>
       @endif
 
+     @if(!empty(Session::get('update-doc')))
+        <div class="alert alert-primary">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
+                 Document updated successefully !
+        </div>
+      @endif
       @if(!empty(Session::get('Workflow saved')))
         <div class="alert alert-dark">
             <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>

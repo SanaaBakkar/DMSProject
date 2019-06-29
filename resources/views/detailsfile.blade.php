@@ -41,6 +41,8 @@
 
 	   </tr>
 </table>  
+
+<iframe src="/visualize/{{$documents->id}}" width="900px" height="600px"></iframe>
  
 
 

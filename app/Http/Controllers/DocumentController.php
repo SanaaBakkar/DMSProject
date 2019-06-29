@@ -23,9 +23,10 @@ class DocumentController extends Controller
     }
 
 
-   public function test()
+   public function AllDocuments()
    {
-   	    return view('/test');
+    $alldocs = Edocument::all(); 
+   	    return view('/alldocuments',compact('alldocs'));
 
    }
 
@@ -177,12 +178,10 @@ class DocumentController extends Controller
 
     {
           $this->validate($request,[
-                'doc_name'=>'required',
                 'description'=>'required',
                 'status'=>'required'
             ]);
             $data= array(
-                'doc_name'=>$request->input('doc_name'),
                 'doc_description'=>$request->input('description'),
                 'doc_status'=>$request->input('status')
 
