@@ -25,6 +25,7 @@ class CreateWorkflowsTable extends Migration
             $table->string('assign_to');  
             $table->integer('percentage')->nullable();              
             $table->date('due_date');               
+            $table->boolean('mail')->default(0);             
             $table->foreign('id_doc')->references('id')->on('edocuments');
             $table->foreign('id_type')->references('id')->on('wftypes');
             /*$table->unsignedInteger('id_user')->nullable()->index();

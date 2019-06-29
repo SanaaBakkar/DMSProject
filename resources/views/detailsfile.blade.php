@@ -30,6 +30,9 @@
       	<td ><a class="list-group-item" href="/update/{{$documents->id}}"><i class="far fa-edit"></i>&nbsp;&nbsp;Edit Proprieties</a> </td> 	
   	</tr>
     <tr>
+        <td ><a class="list-group-item" href="/visualize/{{$documents->id}}"><i class="far fa-edit"></i>&nbsp;&nbsp;View doc </a> </td>   
+    </tr>
+    <tr>
       @if($documents->doc_status=='Not yet started')
 	     <td ><a class="list-group-item" href="/workflow/{{$documents->id}}"><i class="fas fa-sitemap"></i>&nbsp;&nbsp;Start workflow</a> </td> 
        @else
@@ -38,12 +41,7 @@
 
 	   </tr>
 </table>  
-  <table border="1" width="70%" >
-    <tr>
-    	<td width="80%"><iframe src="https://docs.google.com/gview?url=<?php echo $file; ?>.doc&embedded=true"></iframe></td>  	
-   </tr> 
-    </table>
+ 
 
-      
 
 @endsection

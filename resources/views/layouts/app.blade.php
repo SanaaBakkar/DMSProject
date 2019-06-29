@@ -75,6 +75,7 @@ window.open("/document", "ouverture", "toolbar=no, status=yes, scrollbars=yes, r
                                 </li>
                             @endif
                         @else
+
              <div class="collapse navbar-collapse" id="navbarNavDropdown" style=" color: white;">
                 <ul class="navbar-nav">
                   <li class="nav-item active">
@@ -86,19 +87,15 @@ window.open("/document", "ouverture", "toolbar=no, status=yes, scrollbars=yes, r
                   <li class="nav-item">
                     <a class="nav-link" href="/task">My Tasks</a>
                   </li>
-                  <!--<li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                      Shared Files
-                    </a>
-                    <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                      <a class="dropdown-item" href="#" style="color: black;">Action</a>
-                      <a class="dropdown-item" href="#" style="color: black;">Another action</a>
-                      <a class="dropdown-item" href="#" style="color: black;">Something else here</a>
-                    </div>
-                  </li>-->
-                </ul>
+                  <li class="nav-item">
+                    @if(Auth::user()->admin == 1)
+                      <a class="nav-link" href="{{url('/admin')}}">Administration</a>     
+                       @endif                        
+                  </li>
+             </ul>
               </div>
-
+ 
+          
                             <li class="nav-item dropdown">
                                 <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                     {{ Auth::user()->name }} <span class="caret"></span>
@@ -122,9 +119,9 @@ window.open("/document", "ouverture", "toolbar=no, status=yes, scrollbars=yes, r
             </div>
         </nav>
 
-        <main class="py-4">
-            @yield('content')
-        </main>
+            <main class="py-4">
+                @yield('content')
+            </main>
     </div>
 
  

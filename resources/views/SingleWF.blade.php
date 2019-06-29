@@ -133,7 +133,7 @@
         <button type="button" class="btn btn-danger" style="display: inline;" value="remove" onclick="Show(this.value)" >Remove</button><br><br>
 -->
         <b>Other Options:</b>
-        <input type="checkbox" name="email">Send email
+        <input type="checkbox" id="email" name="email">Send email
       </i><br>
 
 

@@ -120,7 +120,8 @@ window.open("/document", "ouverture", "toolbar=no, status=yes, scrollbars=yes, r
 
 
 
-
+<td width="80%"><iframe  width="650" height="750" scrolling="auto" frameborder="1"  src="https://docs.google.com/gview?url={{ asset('/files/'.$documents->doc_name.'') }}" /></td>    
+   
 
 
 

@@ -9,6 +9,8 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Notifications\Notifiable;
 use App\Notifications\InvoicePaid;
 
+use Mail;
+use App\Mail\SendEmail;
 use App\EDocument;
 use App\Etypdoc;
 use App\Workflow;
@@ -47,8 +49,9 @@ public function View_Workflow_detail($id)
   /*** Detail about a parallel review and approve***/
    $WorkflowParallel = Workflowparallel::where('id_doc',$documents->id)->get();
 
-      return view('ViewWorkflow',compact('documents','WorkflowSingle','type1','WorkflowGroup','WorkflowParallel'));
+  return view('ViewWorkflow',compact('documents','WorkflowSingle','type1','WorkflowGroup','WorkflowParallel'));
 }
+
 
  public function WFSingle($id)
  {
@@ -68,6 +71,7 @@ public function View_Workflow_detail($id)
 
  }
 
+
 public function WFgroup($id)
  {
      
@@ -80,6 +84,7 @@ public function WFgroup($id)
            
 }
 
+
  public function WFparallel($id)
 {
          $wftypes = DB::table('wftypes')->get();
@@ -89,6 +94,7 @@ public function WFgroup($id)
     
     return view('/ParallelWF',compact('documents','listUsers','wftypes'));
  }  
+
 
 public function TypesWF(Request $request,$id)
 {
@@ -101,6 +107,8 @@ public function TypesWF(Request $request,$id)
    public function Add_Single_WF(Request $request,$id)
 {
           $documents=EDocument::find($id);
+          $data_doc= array('doc_status'=>'On hold');
+          EDocument::where('id',$id)->update($data_doc);
            /*echo $documents->doc_status;
             echo "voila ".$request->input('type_Workflow').'<br>'. $request->input('description') .'<br>'.$request->input('Date').'<br>'.$request->input('priority').'<br>'.$request->input('id_user').'<br>';*/
 
@@ -123,8 +131,23 @@ if(isset($_POST['id_user'])){
         		 $workflow->assign_to = $user->name;
         		 $workflow->due_date = $request->input('Date');
 
-        		 $workflow->save();
-  
+
+     /***********Send mail option **************/
+             if(isset($_POST['email'])){
+
+              $subject = "application for approval";
+              $message = Auth::user()->name." ask for approbation to it's task' ".$request->input('description')."' ,please connect to DMS application to see more details.";
+
+              $workflow->mail = '1';
+              $workflow->save();
+
+                    Mail::to($user->email)->send(new SendEmail($subject,$message) );
+
+             }else{
+              $workflow->save();
+             }
+
+ 
    	return redirect('/document')->with('Success-MSG','Workflow saved');
           
  }else{
@@ -140,9 +163,7 @@ if(isset($_POST['id_user'])){
 public function Add_Group_WF(Request $request,$id)
 {
     $documents=EDocument::find($id);
-    $data_doc= array(
-                'doc_status'=>'On hold'
-            );
+    $data_doc= array('doc_status'=>'On hold');
     EDocument::where('id',$id)->update($data_doc);
 
     $path = "/workflowGroup/$id";
@@ -165,13 +186,29 @@ public function Add_Group_WF(Request $request,$id)
                 $workflow->assign_to = $group->name;
                 $workflow->due_date = $request->input('Date');
 
-                $workflow->save();
+         /**** Search for users of each group ****/
+          $users = DB::select("select * from users where group_id=".$id_assign);
+
+            if(isset($_POST['email'])){
+
+              $subject = "application for approval";
+              $message = Auth::user()->name." ask for approbation to it's task' ".$request->input('description')."' ,please connect to DMS application to see more details.";
+
+              $workflow->mail = '1';
+              $workflow->save();
+         /***** Send mail to all members of group ****/     
+              foreach ($users as $us) {
+                    Mail::to($us->email)->send(new SendEmail($subject,$message) );
+              }
+                    
+             }else{
+                   $workflow->save();
+             }
 
 
 /*Recording data in workflow group to view detail(each member of group) */
                        
-       /**** Search for users of each group ****/
-        $users = DB::select("select * from users where group_id=".$id_assign);
+   
 
         $workflow = Workflow::where('id_doc',$id)->first();
           foreach ($users as $user) {
@@ -223,12 +260,29 @@ public function Add_users_WF($id,Request $request)
              $names ="";
              foreach ($id_assign as $id_user) {
                $user =User::find($id_user);               
-               $names .= $user->name.', ';
+               $names .= $user->name.', ';               
              }
 
              $workflow->assign_to = $names;
 
-             $workflow->save();
+          if(isset($_POST['email'])){
+
+              $subject = "application for approval";
+              $message = Auth::user()->name." ask for approbation to it's task' ".$request->input('description')."' ,please connect to DMS application to see more details.";
+
+              $workflow->mail = '1';
+
+         /***** Send mail to all users selected ****/  
+            foreach ($id_assign as $id_user) {
+               $user =User::find($id_user);               
+                   $workflow->save();
+                    Mail::to($user->email)->send(new SendEmail($subject,$message) );
+             }   
+                               
+             }else{
+                   $workflow->save();
+             }
+
 
 
 /*Recording data in workflowparallel table to view detail of workflow to each user */
