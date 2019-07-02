@@ -149,6 +149,8 @@ class DocumentController extends Controller
                      $content_types='application/vnd.openxmlformats-officedocument.wordprocessingml.document';
                      }elseif ($ext=='jpeg') {
                      $content_types='image/jpeg';  
+                   }elseif ($ext=='txt') {
+                     $content_types='text/plain charset=utf-8';  
                    }
       return response(file_get_contents($path),200)->header('Content-Type',$content_types);
     }

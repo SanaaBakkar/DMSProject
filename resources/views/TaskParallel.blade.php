@@ -54,7 +54,7 @@
                                   Modified on : {{$docs->updated_at}}<br>
                                   Type : {{$type->typdoc_title}}<br>
                 </div>
-                <div class="col-sm-3"><a href="#"><i class="fa fa-arrow-right" aria-hidden="true"></i>
+                <div class="col-sm-3"><a href="/visualize/{{$docs->id}}"><i class="fa fa-arrow-right" aria-hidden="true"></i>
                             View document</a></div>
                 </div></td>
         </tr>

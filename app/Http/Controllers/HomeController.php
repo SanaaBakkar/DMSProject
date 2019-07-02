@@ -48,7 +48,7 @@ class HomeController extends Controller
   
 
 /****************** Part II: Review and approve(Group review) ********************/
-    $workflowsGroup_active = DB::select("select wg.*,w.status from workflowgroups wg left join workflows w on wg.id_wf=w.id where wg.assign_to like '".Auth::User()->name."' and (wg.status like 'In Progress' or wg.status like 'On hold' or wg.status is null) and w.status is null");
+    $workflowsGroup_active = DB::select("select wg.*,w.status as WFstatus from workflowgroups wg left join workflows w on wg.id_wf=w.id where wg.assign_to like '".Auth::User()->name."' and (wg.status like 'In Progress' or wg.status like 'On hold' or wg.status is null) and w.status is null");
     
      $workflowsGroup_completed = DB::select("select * from workflowgroups where created_by like '".Auth::User()->name."' and status like 'Completed' ");     
 
@@ -61,7 +61,14 @@ class HomeController extends Controller
 
  /******************************* End Part III ***********************************/     
 
-          return view('home',compact('workflows_active','workflows_completed','documents','workflowsGroup_active','workflowsGroup_completed','workflowsParallel_active','workflowsParallel_completed'));
+ /****************** Part IV: Pooled Review and approve ********************/
+ $workflowsPooled_actives = DB::select("select wp.*,w.status as WFstatus from workflowpooleds wp left join workflows w on wp.id_wf=w.id where wp.assign_to like '".Auth::User()->name."' and (wp.status like 'In Progress' or wp.status like 'On hold' or wp.status is null) and w.status is null");  
+           
+
+     $workflowsPooled_completed = DB::select("select * from workflows where created_by like '".Auth::User()->name."' and status like 'Completed' and id_type = 4");
+ /******************************* End Part IV ***********************************/     
+
+          return view('home',compact('workflows_active','workflows_completed','documents','workflowsGroup_active','workflowsGroup_completed','workflowsParallel_active','workflowsParallel_completed','workflowsPooled_actives','workflowsPooled_completed'));
 
       }
     

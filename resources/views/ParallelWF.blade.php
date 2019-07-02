@@ -160,6 +160,9 @@
     
     }else if (val == '3') {
       typewf3.style.display = 'block';
+      
+    } else if (val=='4'){
+     window.location.href = '{{url("workflowPooled/{$documents->id}")}}';
     }
   }
 

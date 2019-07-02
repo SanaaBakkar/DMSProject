@@ -13,6 +13,7 @@ use App\Models\User;
 use App\Edocument;
 use App\Workflowgroup;
 use App\Workflowparallel;
+use App\Workflowpooled;
 
 class TaskController extends Controller
 {
@@ -21,47 +22,42 @@ class TaskController extends Controller
   /***send Data to task page when we Assign a new task to a single reviewer ***/
        $workflows_actives = DB::select("select * from workflows where assign_to like '".Auth::User()->name."' and (status like 'In Progress' or status like 'On hold' or status is null)");
 
-      $workflows_completed = DB::select("select * from workflows where created_by like '".Auth::User()->name."' and status like 'Completed' and id_type = 1");
+      $workflows_completed = DB::select("select * from workflows where created_by like '".Auth::User()->name."' and status like 'Completed'");
        
   /***send Data to task page when we Assign a new task to a group reviewer ***/
     
-  
-  
 
- /*$workflowsGroup_actives= DB::table('workflowgroups')
-            ->leftJoin('workflows', 'workflows.id', '=', 'workflowgroups.id_wf')
-            ->select('workflowgroups.*','workflows.status')
-            ->where('workflowgroups.assign_to','=',Auth::User()->name)
-            ->whereNull('workflows.status')
-            ->where('workflowgroups.status','In Progress')
-            ->orWhere('workflowgroups.status','On hold')
-            ->orWhereNull('workflowgroups.status')
-            ->get();*/
-
-       $workflowsGroup_actives = DB::select("select wg.*,w.status from workflowgroups wg left join workflows w on wg.id_wf=w.id where wg.assign_to like '".Auth::User()->name."' and (wg.status like 'In Progress' or wg.status like 'On hold' or wg.status is null) and w.status is null");  
+       $workflowsGroup_actives = DB::select("select wg.*,w.status as WFstatus from workflowgroups wg left join workflows w on wg.id_wf=w.id where wg.assign_to like '".Auth::User()->name."' and (wg.status like 'In Progress' or wg.status like 'On hold' or wg.status is null) and w.status is null");  
            
 
-     $workflowsGroup_completed = DB::select("select * from workflows where created_by like '".Auth::User()->name."' and status like 'Completed' and id_type = 2");
+ 
 
 /***send Data to task page when we Assign a new task to a single reviewer ***/
 
 
     $workflowsParallel_actives = DB::select("select * from workflowparallels where assign_to like '".Auth::User()->name."' and (status like 'In Progress' or status like 'On hold' or status is null)");
 
-    $workflowsParallel_completed = DB::select("select * from workflows where created_by like '".Auth::User()->name."' and status like 'Completed' and id_type = 3");
-     
+ 
+ /***send Data to task page when we Assign a pooled group ***/
+    
 
- return view('/task',compact('workflows_actives','workflows_completed','workflowsGroup_actives','workflowsGroup_completed','workflowsParallel_actives','workflowsParallel_completed'));
+       $workflowsPooled_actives = DB::select("select wp.*,w.status as WFstatus from workflowpooleds wp left join workflows w on wp.id_wf=w.id where wp.assign_to like '".Auth::User()->name."' and (wp.status like 'In Progress' or wp.status like 'On hold' or wp.status is null) and w.status is null");  
+           
+
+
+    
+
+ return view('/task',compact('workflows_actives','workflows_completed','workflowsGroup_actives','workflowsGroup_completed','workflowsParallel_actives','workflowsParallel_completed','workflowsPooled_actives','workflowsPooled_completed'));
 
 
 }
 
 
-   public function DetailWorkflow($id)
+   public function ShowTaskSingle($id)
    {
       $workflow= Workflow::where('id',$id)->where('id_type','=','1')->first();
 
-     return view('/detailworkflow',compact('workflow','workflowParallel'));
+     return view('/TaskSignle',compact('workflow'));
 
   }
 
@@ -80,7 +76,14 @@ public function ShowTaskParallel($id)
      return view('/TaskParallel',compact('workflowParallel'));
 }
 
-  public function Save(Request $request,$id)
+public function ShowTaskPooled($id)
+{
+     $workflowPooled = Workflowpooled::where('id',$id)->first();
+
+     return view('/TaskPooled',compact('workflowPooled'));
+}
+
+  public function SaveSingleAssign(Request $request,$id)
   {
       $status=$request->input('status');
      $this->validate($request,[
@@ -247,6 +250,48 @@ public function SaveUsersParallel($id,Request $request)
          
 }
 
+public function SaveUserPooled($id,Request $request)
+{
+            $status=$request->input('status');
+            $id_doc = $request->input('ID_doc');
+
+            $this->validate($request,[
+                'status'=>'required'
+            ]);
+
+            $groupName = Workflow::where('id_doc',$id_doc)->first();
+
+
+            $data_WF= array(
+                'comment'=>$request->input('comment'),
+                 'status'=>$status
+            );
+            Workflowpooled::where('id',$id)->update($data_WF);
+    
+
+   //number of user who has approved 
+ $nbr_user_approved  = DB::table('workflowpooleds')->where('id_doc',$id_doc)->where('status','Completed')->count();
+             if ($nbr_user_approved==1) {
+  
+  $user_approved  = DB::table('Workflowpooleds')->where('id_doc',$id_doc)->where('status','Completed')->first();
+              $data_doc = array( 
+                'doc_status'=>'Completed',
+                'doc_reviewed_by'=>$groupName->assign_to,
+                'doc_approved_by'=>$user_approved->assign_to
+                );
+
+              $data_wf = array(
+                'status'=>'Completed'
+               );
+
+              EDocument::where('id',$id_doc)->update($data_doc);
+              Workflow::where('id_doc',$id_doc)->update($data_wf);
+             }
+
+       return redirect('/task')->with('update-wf','msg');
+
+}
+
   /* make an interface to show to user detail of it's completed tasks*/
   public function CompletedTask($id)
   {
@@ -256,6 +301,7 @@ public function SaveUsersParallel($id,Request $request)
     return view('CompletedTask',compact('Workflow'));
 
 }
+
 /* Disable Task when the user make done to it's completed task */
   public function DisableTask($id, Request $request)
   {

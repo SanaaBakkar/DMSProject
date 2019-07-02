@@ -18,7 +18,14 @@
   <h4>My Tasks</h4><hr>
 
   <!--- Messages Info --->
-    @if(!empty(Session::get('task-done')))
+    @if(!empty(Session::get('update-wf')))
+        <div class="alert alert-success">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
+                Worfklow Updated successfully
+        </div>
+      @endif
+
+  @if(!empty(Session::get('task-done')))
         <div class="alert alert-success">
             <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
                 Task Done successfully
@@ -57,6 +64,7 @@
           </tr>
               @endforeach
               @endif
+
 
          @if (count($workflowsGroup_actives) >0)
             @foreach($workflowsGroup_actives as $workflowsGroup_active)
@@ -126,6 +134,38 @@
      @endforeach
 @endif
 
+  @if (count($workflowsPooled_actives) >0)
+            @foreach($workflowsPooled_actives as $workflowsPooled_active)
+         <?php
+                 $docs = App\Edocument::find($workflowsPooled_active->id_doc);
+                 $types = App\Etypdoc::find($docs->typdoc_id);
+          ?>
+
+                @if($docs->doc_status!='Completed')
+          <tr style="height: 90px">
+            <td width="10%"><i class="fa fa-list" aria-hidden="true"></i></td>
+            <td width="90%"><a href="taskPooled/{{$workflowsPooled_active->id}}" style="color: black; font-size: 17px">{{$workflowsPooled_active->description}}</a><br>
+              <div class="row">
+                <div class="col-md-6">
+                  <b>Due: </b>{{ $workflowsPooled_active->due_date}}
+                </div>
+                <div class="col-md-6">
+                    <input type="text" name="id_doc" value="{{ $workflowsPooled_active->id_doc}}" hidden>
+                  <b>Started: </b>{{ $workflowsPooled_active->created_at}}<br>
+                </div>                
+              </div>              
+              <b>Status: </b>{{$workflowsPooled_active->status}}
+                               <br>
+
+               <b>Type:</b>{{$types->typdoc_title}}<br>
+               <b>Started by: </b>{{ $workflowsPooled_active->created_by}}<br>
+
+            </td>
+          </tr>
+          @endif
+          
+              @endforeach
+              @endif
         </table>
         </i>
         </div>
@@ -176,38 +216,6 @@
           @endif
 
 
-           @if (count($workflowsParallel_completed) >0)
-              @foreach($workflowsParallel_completed as $workflowsParallel_comp)
-
-          <tr style="height: 90px">
-            <td width="10%"><i class="fa fa-list" aria-hidden="true"></i></td>
-            <td width="90%"><a href="CompletedTask/{{$workflowsParallel_comp->id}}" style="color: black; font-size: 17px">{{$workflowsParallel_comp->description}}</a><br>
-
-              <div class="row">
-                <div class="col-md-6">
-                  <b>Due: </b>{{ $workflowsParallel_comp->due_date}}
-                </div>
-                <div class="col-md-6">
-                    <input type="text" name="id_doc" value="{{$workflowsParallel_comp->id_doc}}" hidden>
-                  <b>Started: </b>{{ $workflowsParallel_comp->created_at}}<br>
-                </div>                
-              </div>   
-
-              <b>Status: </b>{{$workflowsParallel_comp->status}}<br>
-             
-
-               <b>Type:</b><?php
-                                $docs = App\Edocument::find($workflowsParallel_comp->id_doc);
-                                $types = App\Etypdoc::find($docs->typdoc_id);
-                                echo ' '.$types->typdoc_title;
-                              ?><br>
-               <b>Started by: </b>{{ $workflowsParallel_comp->created_by}}<br>
-
-            </td>
-          </tr>
-
-              @endforeach
-          @endif
         </table>
         </i>
         </div>

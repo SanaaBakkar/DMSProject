@@ -23,7 +23,7 @@
                @foreach($documents as $document)
                <tr>
                     <td>{{$document->id}}</td>
-                    <td>{{$document->doc_name}}</td>
+                    <td><a href="/visualize/{{$document->id}}">{{$document->doc_name}}</a></td>
                     <td>{{$document->doc_description}}</td>
                     <td>{{$document->doc_prepared_by}}</td>
                     <td>{{$document->doc_reviewed_by}}</td>

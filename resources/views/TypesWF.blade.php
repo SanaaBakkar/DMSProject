@@ -47,6 +47,8 @@
     
     }else if (val == '3') {
       window.location.href = '{{url("workflowParallel/{$documents->id}")}}';
+    }else if (val == '4') {
+      window.location.href = '{{url("workflowPooled/{$documents->id}")}}';
     }
 
   }

@@ -25,7 +25,7 @@ class AdminController extends Controller
     public function ShowParallelWF()
     {
     	$workflows  =Workflow::where('id_type','=','3')->get();
-    	return view('admin.parallelWF',compact('workflows'));
+    	return view('admin.workflow.parallelWF',compact('workflows'));
     }
 
 

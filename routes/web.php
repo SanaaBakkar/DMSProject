@@ -41,14 +41,18 @@ Route::post('/insert','DocumentController@upload');*/
 /******************** Document part ********************/
 
 Route::get('/document', 'DocumentController@listDocuments');
-Route::get('/listdocuments', 'DocumentController@listDocuments');
+Route::get('/listdocuments', 'DocumentController@AllDocuments');
 
 Route::get('upload','DocumentController@create');
 Route::post('upload','DocumentController@store');
+
 Route::get('delete/{id}','DocumentController@deletefile');
+
 Route::get('detail/{id}','DocumentController@detailsfile');
+
 Route::get('update/{id}','DocumentController@update');
 Route::post('edit/{id}','DocumentController@edit');
+
 Route::get('visualize/{id}','DocumentController@viewdoc');
 
 
@@ -65,16 +69,18 @@ Route::post('workflowG/{id}','WorkflowController@Add_Group_WF');
 Route::get('workflowParallel/{id}','WorkflowController@WFparallel');
 Route::post('workflowParallel/{id}','WorkflowController@Add_users_WF');
 
-Route::get('viewworkflow/{id}','WorkflowController@View_Workflow_detail');
+Route::get('workflowPooled/{id}','WorkflowController@WFpooled');
+Route::post('workflowPooled/{id}','WorkflowController@Add_user_WF');
 
+Route::get('viewworkflow/{id}','WorkflowController@View_Workflow_detail');
 
 
 
 /******************* Task Part ***********************/
 Route::get('/task','TaskController@Home');
 
-Route::get('/task/{id}','TaskController@DetailWorkflow');
-Route::post('/task/{id}','TaskController@Save');
+Route::get('/task/{id}','TaskController@ShowTaskSingle');
+Route::post('/task/{id}','TaskController@SaveSingleAssign');
 
 Route::get('/taskGroup/{id}','TaskController@ShowTaskGroup');
 Route::post('/taskGroup/{id}','TaskController@SaveGroup');
@@ -85,6 +91,8 @@ Route::post('/taskParallel/{id}','TaskController@SaveUsersParallel');
 Route::get('/CompletedTask/{id}','TaskController@CompletedTask');
 Route::post('/CompletedTask/{id}','TaskController@DisableTask');
 
+Route::get('/taskPooled/{id}','TaskController@ShowTaskPooled');
+Route::post('/taskPooled/{id}','TaskController@SaveUserPooled');
  
 
 

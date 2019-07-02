@@ -33,7 +33,7 @@
 
   <!---------------------Group Part ------------------------>
       <!-- Modal of button Select of a groupe Assignee --> 
- <form method="post" action="{{ url('/workflowG',array($documents->id)) }}">
+ <form method="post" action="{{ url('/workflowPooled',array($documents->id)) }}">
             {{csrf_field()}}
 
 
@@ -60,7 +60,7 @@
                     <tr>
                       <td align="left" class="subtitle_3">{{$listGroup->name}}</td>
 
-                      <td align="right"><input type="checkbox" name="id_group" value ="{{$listGroup->id}}" ></input></td>
+                      <td align="right"><input type="radio" name="id_group" value ="{{$listGroup->id}}" ></input></td>
                     </tr>
                             <?php  endforeach; ?>
                 </table>  
@@ -82,12 +82,12 @@
 </div>
 <!--- End Modal --->  
 
-        <!-- Review and approve (Group review) -->     
-           <div id="2" class="form-group" style="display: block;">
+        <!-- Review and approve (Pooled review) -->     
+           <div id="4" class="form-group" style="display: block;">
             <i class="list-group-item">
-              <label><b>Review and approve (Group review):</b></label><br>
+              <label><b>Review and approve (Pooled review):</b></label><br>
 
-              <input type="text" name="type_Workflow" value="2" hidden>
+              <input type="text" name="type_Workflow" value="4" hidden>
 
               Description:<br>
                <textarea style="width: 80%; height: 20%" name="description" ></textarea><br><br>
@@ -110,13 +110,7 @@
         <b>Assignee</b><hr>
         Review Group:*    
         <input type="button" name="id_group" class="btn btn-info" data-toggle="modal" data-target="#myModalGroup" value="Select" required><br><br>
-        
-        Required approval Percentage*:
-
-        <input type="number" class="form-control" name="percentage" style="width: 15%; display: inline-block;" min="1" max="100" value="50" >
-        <span class="help-icon">
-          <img src="/img/interro.png" height="20px" title="This field must have a value between 1 and 100.">
-        </span><br><br>
+ 
 
         <b>Document</b>
         <div id="doc" style="display: block;">
@@ -155,19 +149,20 @@
   /***** Display each type of workflow *****/
   function ShowHide(val) {
 
-     var typewf2 = document.getElementById("2");
+     var typewf = document.getElementById("4");
 
     if (val == '1') { 
 
      window.location.href = '{{url("workflow/{$documents->id}")}}';
 
     }else if (val == '2') {
-        typewf2.style.display='block';   
+      window.location.href = '{{url("workflowGroup/{$documents->id}")}}';
         
     } else if (val=='3'){
      window.location.href = '{{url("workflowParallel/{$documents->id}")}}';
+
     } else if (val=='4'){
-     window.location.href = '{{url("workflowPooled/{$documents->id}")}}';
+        typewf.style.display='block';   
     }
   }
 

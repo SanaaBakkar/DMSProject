@@ -19,6 +19,7 @@ use App\Models\User;
 use App\Group;
 use App\Workflowgroup;
 use App\Workflowparallel;
+use App\Workflowpooled;
 
 class WorkflowController extends Controller
 {
@@ -49,7 +50,10 @@ public function View_Workflow_detail($id)
   /*** Detail about a parallel review and approve***/
    $WorkflowParallel = Workflowparallel::where('id_doc',$documents->id)->get();
 
-  return view('ViewWorkflow',compact('documents','WorkflowSingle','type1','WorkflowGroup','WorkflowParallel'));
+/*** Detail about a parallel review and approve***/
+   $WorkflowPooled = Workflowpooled::where('id_doc',$documents->id)->get();
+
+  return view('ViewWorkflow',compact('documents','WorkflowSingle','type1','WorkflowGroup','WorkflowParallel','WorkflowPooled'));
 }
 
 
@@ -95,6 +99,15 @@ public function WFgroup($id)
     return view('/ParallelWF',compact('documents','listUsers','wftypes'));
  }  
 
+public function WFpooled($id)
+{
+         $wftypes = DB::table('wftypes')->get();
+         $listGroups = DB::table('groups')->get();
+         $documents=EDocument::find($id);
+
+    
+    return view('/PooledWF',compact('documents','listGroups','wftypes'));
+}
 
 public function TypesWF(Request $request,$id)
 {
@@ -311,5 +324,76 @@ public function Add_users_WF($id,Request $request)
       }
 
 }
+
+public function Add_user_WF(Request $request,$id)
+{
+    $documents=EDocument::find($id);
+    $data_doc= array('doc_status'=>'On hold');
+    EDocument::where('id',$id)->update($data_doc);
+
+    $path = "/workflowPooled/$id";
+
+  if(isset($_POST['id_group'])){
+
+     /******* Recording data in workflow table-General ********/
+                $workflow = new Workflow;
+                $workflow->id_doc = $id;
+                $workflow->id_type = $request->input('type_Workflow'); 
+                $workflow->description = $request->input('description');
+                $workflow->priority = $request->input('priority');
+                $workflow->created_by = Auth::user()->name;
+                $id_assign = $request->input('id_group');
+                $group = Group::find($id_assign);
+                $workflow->assign_to = $group->name;
+                $workflow->due_date = $request->input('Date');
+
+         /**** Search for users of each group ****/
+          $users = DB::select("select * from users where group_id=".$id_assign);
+
+            if(isset($_POST['email'])){
+
+              $subject = "application for approval";
+              $message = Auth::user()->name." ask for approbation to it's task' ".$request->input('description')."' ,please connect to DMS application to see more details.";
+
+              $workflow->mail = '1';
+              $workflow->save();
+         /***** Send mail to all members of group ****/     
+              foreach ($users as $us) {
+                    Mail::to($us->email)->send(new SendEmail($subject,$message) );
+              }
+                    
+             }else{
+                   $workflow->save();
+             }
+
+
+/*Recording data in workflow group to view detail(each member of group) */
+                       
+
+        $workflow = Workflow::where('id_doc',$id)->first();
+          foreach ($users as $user) {
+               $workflowPooled = new Workflowpooled;
+               $workflowPooled->id_wf = $workflow->id;              
+               $workflowPooled->id_doc = $id;
+               $workflowPooled->description = $request->input('description');
+               $workflowPooled->priority = $request->input('priority');
+               $workflowPooled->created_by = Auth::user()->name;
+               $workflowPooled->due_date = $request->input('Date');
+               $workflowPooled->assign_to =$user->name;
+               $workflowPooled->save();
+
+               }
+                       
+                        
+       return redirect('/document')->with('Success-MSG','Workflow saved');
+    
+ }else{
+ 
+               return redirect($path)->with('Error-info','Fill all fields');
+      }
+
+}
+
+
 
 }

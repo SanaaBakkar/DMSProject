@@ -129,6 +129,29 @@
  				</thead>
  			</table> <br>
 	@endif
+
+
+	@if(count($WorkflowPooled)>0)
+	
+<b>Details Workflow:</b>
+<table class="table table-sm" style="width: 80%;">
+ 				<thead class="thead-light" ">
+ 					<tr>
+ 						<th>Users of group</th>
+ 						<th>Comment</th>
+ 						<th>Status</th>
+ 					</tr>
+
+ 				@foreach($WorkflowPooled as $WorkflowPool)
+ 					<tr>
+ 						<td>{{$WorkflowPool->assign_to}}</td>
+ 						<td>{{$WorkflowPool->comment}}</td>
+ 						<td>{{$WorkflowPool->status}}</td>
+ 					</tr>
+ 				@endforeach
+ 				</thead>
+ 			</table> <br>
+	@endif
      </i>
    </i>
 

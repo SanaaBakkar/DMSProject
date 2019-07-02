@@ -98,6 +98,27 @@
 
                   @endif
 
+                @if (count($workflowsPooled_actives) >0)
+
+                    @foreach($workflowsPooled_actives as $workflowPooled_active)
+ 
+                   <?php
+                 $docs = App\Edocument::find($workflowPooled_active->id_doc);
+                   ?>
+
+                      @if($docs->doc_status!='Completed')
+                            <p class="card-text" style="font-size: 11px"><a href="taskPooled/{{$workflowPooled_active->id}}" style="color: black; font-size: 17px"><b>
+                                {{$workflowPooled_active->description}}</b></a><br>Due: {{$workflowPooled_active->due_date}}<br>
+                                       <?php if (empty($workflowPooled_active->status)) {
+                                         echo 'Not Yet Started';
+                                       }else{
+                                        echo $workflowPooled_active->status;
+                                       } ?> <br>
+                               </p><hr>
+                     @endif         
+                    @endforeach
+
+                  @endif
                   </div>   
                   <div id="completed" style="display: none;">
                    @if (count($workflows_completed) >0)
