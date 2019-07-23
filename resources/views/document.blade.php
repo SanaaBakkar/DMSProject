@@ -2,16 +2,21 @@
 
 @section('content')
 <body>
-  
+ 
+<?php ?>   
 <!----Top menu ----->
 <table width="100%" border="0" cellspacing="0" cellpadding="0">
      <tr>
           <td width="5%" align="left" class="subtitle_3"> </td>
           <td width="30%" align="left" class="subtitle_3"> 
                 <a class="list-group-item" href="{{url('listdocuments')}}"><i class="fa fa-list-ul" aria-hidden="true"></i>&nbsp; List of documents</a></td>
+     @if(count($role) > 0)     
+          @if($role->name=='Contributor' or $role->name=='Collaborator' or $role->name=='Coordinator')      
           <td width="30%" align="left" class="subtitle_3">  <a class="list-group-item" href=" {{url('upload')}}"><i class="fa fa-plus" aria-hidden="true"></i>&nbsp; Add New document</a></td>
           <td width="30%" align="left" class="subtitle_3">  <a class="list-group-item" href="#"><i class="fa fa-book fa-fw" aria-hidden="true"></i>&nbsp; Compare documents</a></td>
           <td width="5%" align="left" class="subtitle_3"></td>
+          @endif
+      @endif    
     </tr>
  </table><br>
 
@@ -63,7 +68,7 @@
           <tr>
 
               <td>{{$document->id}}</td>
-              <td width="30%"><a href="public/files/<?php echo $document->doc_name; ?>" target="_blank">
+              <td width="30%"><a href="visualize/{{$document->id}}"  target="_blank">
               {{$document->doc_name}}</a></td>
               <td width="20%">{{$document->doc_description}}</td>
               <td>{{$document->created_at}}</td>

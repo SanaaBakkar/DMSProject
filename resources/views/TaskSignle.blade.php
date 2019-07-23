@@ -48,7 +48,7 @@
         			  <div class="col-sm-6"><b> {{$docs->doc_name}}</b><br>
         			              Description :  {{$docs->doc_description}}<br>
         			              Modified on : {{$docs->updated_at}}</div>
-        			  <div class="col-sm-3"><a href="#"><i class="fa fa-arrow-right" aria-hidden="true"></i>
+        			  <div class="col-sm-3"><a href="/visualize/{{$docs->id}}"><i class="fa fa-arrow-right" aria-hidden="true"></i>
                             View document</a></div>
         			 			</div></td>
             </tr>

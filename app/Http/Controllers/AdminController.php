@@ -11,6 +11,8 @@ use App\Group;
 use App\Workflowgroup;
 use App\Workflowparallel;
 use App\Wftype;
+use App\Role;
+use App\Departement;
 
 class AdminController extends Controller
 {
@@ -28,7 +30,7 @@ class AdminController extends Controller
     	return view('admin.workflow.parallelWF',compact('workflows'));
     }
 
-
+ 
   /************     Manage Users  ************/  
     public function ShowUsers()
     {
@@ -39,7 +41,8 @@ class AdminController extends Controller
     public function AddUser()
     {
         $listgroups = Group::all();
-        return view('admin.user.adduser',compact('listgroups'));
+        $listroles = Role::all();
+        return view('admin.user.adduser',compact('listgroups','listroles'));
     }
 
     public function SaveUser(Request $request)
@@ -48,14 +51,14 @@ class AdminController extends Controller
             $this->validate($request, [
                'name'=>'required',
                 'email'=>'required',
-                'group_id'=>'required',
                 'admin'=>'required',
-                'password'=>'required']);
+                'password'=>'required',
+                'role_id'=>'required']);
 
             $user= new User;
             $user->name= ucfirst($request->input('name'));
             $user->email=  $request->input('email');
-            $user->group_id= $request->input('group_id');
+            $user->role_id= $request->input('role_id');
             $user->password= bcrypt($request->input('password')) ;
             $user->admin= $request->input('admin');
               
@@ -77,10 +80,13 @@ class AdminController extends Controller
     public function UpdateUser($id)
     {
         $user = User::find($id);
-        $groupe_user = Group::find($user->group_id);
+        $group_user = Group::find($user->group_id);
         $listgroups = Group::where('id','<>',$user->group_id)->get();
 
-        return view('admin.user.UpdateUser',compact('user','groupe_user','listgroups'));
+        $role_user = Role::find($user->role_id);        
+        $listroles = Role::where('id','<>',$user->role_id)->get();
+
+        return view('admin.user.UpdateUser',compact('user','group_user','listgroups','listroles','role_user'));
     }
 
     public function EditUser(Request $request,$id)
@@ -89,12 +95,14 @@ class AdminController extends Controller
                 'name'=>'required',
                 'email'=>'required',
                 'group_name'=>'required',
+                'role_id'=>'required',
                 'isadmin'=>'required'
             ]);
             $data= array(
                 'name'=>$request->input('name'),
                 'email'=>$request->input('email'),
                 'group_id'=>$request->input('group_name'),
+                'role_id'=>$request->input('role_id'),
                 'admin'=>$request->input('isadmin')
             );
             User::where('id',$id)->update($data);
@@ -110,6 +118,73 @@ class AdminController extends Controller
 
     /*******End User part *******/
 
+
+/******** Manage departements *********/
+
+    public function ShowDepartments()
+    {
+        $departments = Departement::all();
+        return view('admin.department.departments',compact('departments'));
+    }
+
+    public function SaveDepartment(Request $request)
+    {
+         $this->validate($request, [
+               'name'=>'required']);
+
+            $departement= new Departement;
+            $departement->name= ucfirst($request->input('name'));
+            $verify=Departement::where(ucfirst('name'), $departement->name)->get();
+
+            if ($verify->count() >0) {
+
+                return  redirect('/departments')->with('error','Departement already exist!'); 
+
+            }else{
+
+                $departement->save();
+               return redirect('/departments')->with('create','created');                
+            }
+
+    }
+
+   public function UpdateDepartment($id)
+    {
+        $department = Departement::find($id);
+        return view('admin.department.UpdateDepartment',compact('department'));
+    }
+
+     public function EditDepartment(Request $request,$id)
+    {
+        $this->validate($request,[
+                'name'=>'required']);
+
+            $data= array(
+                'name'=>ucfirst($request->input('name')));
+
+            $verify = Departement::where(ucfirst('name'),ucfirst($request->input('name')))->where('id','<>',$id)->get();
+
+            if ($verify->count() >0) {
+               
+               return redirect('/updatedepartment/'.$id)->with('error','Departement already exist');
+            }else{
+
+                Departement::where('id',$id)->update($data);
+            return redirect('/departments')->with('update','msg');
+            }
+
+            
+    }
+
+     public function DeleteDepartment($id)
+    {
+            Departement::where('id',$id)->delete();
+            return redirect('/departments')->with('delete','deleted');
+    }
+
+    
+    
+/******** End departement part *******/
 
    /*********   Manage Groups  ********/  
     public function ShowGroups()
@@ -127,9 +202,17 @@ class AdminController extends Controller
 
             $group= new Group;
             $group->name= ucfirst($request->input('name'));
+            $verify=Group::where(ucfirst('name'), $group->name)->get();
 
-            $group->save();
-        return redirect('/groups')->with('create','created');
+            if ($verify->count() >0) {
+
+                return  redirect('/groups')->with('error','Group already exist!'); 
+
+            }else{
+
+              $group->save();
+           return redirect('/groups')->with('create','created');
+            }  
            
     }
 
@@ -145,11 +228,20 @@ class AdminController extends Controller
                 'name'=>'required']);
 
             $data= array(
-                'name'=>$request->input('name'));
+                'name'=>ucfirst($request->input('name')));
 
-            Group::where('id',$id)->update($data);
-            return redirect('/groups')->with('update','msg');
-    }
+    
+          $verify = Group::where(ucfirst('name'),ucfirst($request->input('name')))->where('id','<>',$id)->get();
+
+            if ($verify->count() >0) {
+               
+               return redirect('/updategroup/'.$id)->with('error','Group already exist');
+            }else{
+
+                Group::where('id',$id)->update($data);
+                return redirect('/groups')->with('update','msg');
+            }
+     }
 
     public function DeleteGroup($id)
     {

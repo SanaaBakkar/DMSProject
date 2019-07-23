@@ -161,7 +161,7 @@ if(isset($_POST['id_user'])){
              }
 
  
-   	return redirect('/document')->with('Success-MSG','Workflow saved');
+   	return redirect('/document')->with('WF-created','Created');
           
  }else{
       
@@ -240,7 +240,7 @@ public function Add_Group_WF(Request $request,$id)
                }
                        
                         
-       return redirect('/document')->with('Success-MSG','Workflow saved');
+       return redirect('/document')->with('WF-created','Created');
     
  }else{
  
@@ -316,7 +316,7 @@ public function Add_users_WF($id,Request $request)
                }
                       
                        
-       return redirect('/document')->with('Success-MSG','Workflow saved');
+       return redirect('/document')->with('WF-created','Created');
     
  }else{
  
@@ -385,7 +385,7 @@ public function Add_user_WF(Request $request,$id)
                }
                        
                         
-       return redirect('/document')->with('Success-MSG','Workflow saved');
+       return redirect('/document')->with('WF-created','Created');
     
  }else{
  

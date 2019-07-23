@@ -99,6 +99,7 @@ Route::post('/taskPooled/{id}','TaskController@SaveUserPooled');
 Route::get('/admin', 'AdminController@index');
 Route::get('/users', 'AdminController@ShowUsers');
 Route::get('/groups', 'AdminController@ShowGroups');
+Route::get('/departments', 'AdminController@ShowDepartments');
 
 Route::get('/alldocuments', 'AdminController@ShowDocuments');
 Route::get('/doctypes', 'AdminController@ShowDocType');
@@ -112,6 +113,12 @@ Route::post('/edituser/{id}', 'AdminController@EditUser');
 Route::get('AddUser','AdminController@AddUser');
 Route::post('/saveuser','AdminController@SaveUser');
 Route::get('/deleteuser/{id}', 'AdminController@DeleteUser');
+
+/*******Crud Operation : Departement *******/
+Route::post('/savedepartment','AdminController@SaveDepartment');
+Route::get('/updatedepartment/{id}', 'AdminController@UpdateDepartment');
+Route::post('/editdepartment/{id}', 'AdminController@EditDepartment');
+Route::get('/deletedepartment/{id}', 'AdminController@DeleteDepartment');
 
 /*******Crud Operation: Group ********/
 Route::post('/savegroup','AdminController@SaveGroup');

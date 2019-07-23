@@ -42,7 +42,7 @@
 	   </tr>
 </table>  
 
-<iframe src="/visualize/{{$documents->id}}" width="900px" height="600px"></iframe>
+<iframe src="/visualize/{{$documents->id}}" width="1300px" height="600px" style="margin: 0px 20px 0px 20px"></iframe>
  
 
 

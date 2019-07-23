@@ -22,6 +22,21 @@
 
                 </div>
             </div>
+
+            <!--/.col-->
+
+            <div class="col-sm-6 col-lg-3">
+                <div class="card text-white bg-flat-color-3">
+                    <div class="card-body pb-0">
+                        <p class="text-light"><a href="{{url('/departments')}}" style="color: black"><b>List of departements</b></a></p>
+
+                    </div>
+
+                    <div class="chart-wrapper px-0" style="height:70px;" height="70">
+                        <canvas id="widgetChart3"></canvas>
+                    </div>
+                </div>
+            </div>
             <!--/.col-->
 
         <div class="col-sm-6 col-lg-3">

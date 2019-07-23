@@ -17,6 +17,10 @@ class CreateUsersTable extends Migration
             $table->increments('id');
             $table->string('name');
             $table->string('email')->unique();
+            $table->unsignedInteger('departement_id')->nullable()->index();
+            $table->foreign('departement_id')->references('id')->on('departements');
+            $table->unsignedInteger('role_id')->nullable()->index();
+            $table->foreign('role_id')->references('id')->on('roles');
             $table->unsignedInteger('group_id')->nullable()->index();
             $table->foreign('group_id')->references('id')->on('groups');
             $table->timestamp('email_verified_at')->nullable();

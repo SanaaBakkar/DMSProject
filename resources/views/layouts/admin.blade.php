@@ -62,12 +62,15 @@
                     </li>
 
 
-                    <h3 class="menu-title">UI elements</h3><!-- /.menu-title -->
+                    <h3 class="menu-title">Elements</h3><!-- /.menu-title -->
                     <li>
                         <a href="{{url('/users')}}"> <i class=" menu-icon fa fa-user"></i>Users</a>
                     </li>
                     <li>
                         <a href="{{url('/groups')}}"> <i class=" menu-icon fa fa-group"></i>Groups</a>
+                    </li>
+                     <li>
+                        <a href="{{url('/departments')}}"> <i class=" menu-icon fa fa-building"></i>Departments</a>
                     </li>
                     <h3 class="menu-title">Documents</h3><!-- /.menu-title -->
                      <li >

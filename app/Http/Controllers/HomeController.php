@@ -34,7 +34,7 @@ class HomeController extends Controller
     {
       
     
-/********************** Part I: Assign a new task ***************************/
+/**************************** Part I: Assign a new task ***************************/
 
     /*****Display to user all it's tasks(About Single WF)  **********/    
      $workflows_active = DB::select("select * from workflows where assign_to like '".Auth::User()->name."' and (status like 'In Progress' or status like 'On hold' or status is null)");
@@ -44,7 +44,8 @@ class HomeController extends Controller
     /*******Display to user all it's documents *******/
      $documents = DB::select("select * from edocuments where doc_prepared_by like '".Auth::User()->name."'");
 
- /******************************* End Part I ********************************/
+/******************************* End Part I ********************************/
+
   
 
 /****************** Part II: Review and approve(Group review) ********************/

@@ -8,11 +8,10 @@
           <div class="form-group">
             <h3><i class="list-group-item"><i class="fas fa-sitemap"></i>&nbsp;&nbsp; Start Workflow</i></h3><hr>
           </div>
-
-             @if(!empty(Session::get('info-phone')))
+            @if(!empty(Session::get('WF-created')))
           <div class="alert alert-success">
               <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
-                  Workflow Started 
+                  Workflow Started successfully
           </div>
              @endif
 

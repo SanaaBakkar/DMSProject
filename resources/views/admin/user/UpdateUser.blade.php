@@ -26,17 +26,23 @@
 
 				<div class="col-sm-4" style="margin: 20px 0px 0px 0px">
 					Groupe Name :<select class="custom-select mr-sm-2" name="group_name">
-									<option value="{{$user->group_id}}" selected>{{$groupe_user->name}}</option>
+									<option value="{{$group_user->id}}" selected>{{$group_user->name}}</option>
 									@foreach($listgroups as $group)
 									<option value="{{$group->id}}">{{$group->name}}</option>
 									@endforeach
 								</select>
 				</div>	
 
-				<div class="col-sm-2">
+				<div class="col-sm-4" style="margin: 20px 0px 0px 0px">
+					Role : <select class="custom-select mr-sm-2" name="role_id" required>
+					            	<option value="{{$role_user->id}}" selected>{{$role_user->name}}</option>
+									@foreach($listroles as $role)
+									<option value="{{$role->id}}">{{$role->name}}</option>
+									@endforeach
+						   </select>
 				</div>	
 
-				<div class="col-sm-6" style="margin: 20px 0px 10px 0px">
+				<div class="col-sm-4" style="margin: 20px 0px 10px 0px">
 					It is an admin? <select class="custom-select mr-sm-2" name="isadmin">
 									@if($user->admin==1)
 									    <option value="1" selected>Yes</option>

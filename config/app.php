@@ -178,6 +178,11 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
 
+         /*
+         * dompdf package...
+         */
+          Barryvdh\DomPDF\ServiceProvider::class,
+
     ],
 
     /*
@@ -235,6 +240,7 @@ return [
         'Form'=> Collective\Html\FormFacade::class,
         'Html'=> Collective\Html\HtmlFacade::class,
         'Purifier' => Mews\Purifier\Facades\Purifier::class,
+        'PDF' => Barryvdh\DomPDF\Facade::class,
 
 
     ],

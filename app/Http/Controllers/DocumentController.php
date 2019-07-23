@@ -11,8 +11,13 @@ use File;
 use App\EDocument;
 use App\Etypdoc;
 use App\Models\User;
+use App\Role;
+use App\Workflow;
+use App\Workflowgroup;
+use App\Workflowparallel;
+use App\Workflowpooled;
 
-
+use PhpOffice\PhpWord\Settings;
 
 class DocumentController extends Controller
 {
@@ -25,8 +30,10 @@ class DocumentController extends Controller
 
    public function AllDocuments()
    {
-    $alldocs = Edocument::all(); 
-   	    return view('/alldocuments',compact('alldocs'));
+      $alldocs = Edocument::all(); 
+      $role = Role::find(Auth::user()->role_id);
+
+   	  return view('/alldocuments',compact('alldocs','role'));
 
    }
 
@@ -35,31 +42,13 @@ class DocumentController extends Controller
    {
 
 	  $documents = Edocument::where('doc_prepared_by',Auth::User()->name)->get();   
-	
-	  return view('/document',['documents'=>$documents]);
-	
-   }
+	   $role = Role::find(Auth::user()->role_id);
 
-
- /*public static function viewuploadedDocuments()
-   {
-
-	  $documents = DB::table('edocuments')->get();   
-	 foreach ($documents as $document):
-       $visibility = Storage::getVisibility('public/files/', $document->doc_name);
-                              // set visibility to true
-       Storage::setVisibility('public/files/', $document->doc_name, 'public');
-
-                              // get the url of the uploaded file
-       $url = Storage::url('public/files/', $document->doc_name); 
-            // return the url
-           // echo $url;
-   endforeach;
-
-
-	  return view('/document',['url'=>$url]);
+	  return view('/document',['documents'=>$documents],['role'=>$role]);
 	
    }
+
+
 
  
     
@@ -146,9 +135,25 @@ class DocumentController extends Controller
                    }elseif ($ext=='doc') {
                      $content_types='application/msword';  
                    }elseif ($ext=='docx') {
-                     $content_types='application/vnd.openxmlformats-officedocument.wordprocessingml.document';
-                     }elseif ($ext=='jpeg') {
+                      // Make sure you have `dompdf/dompdf` in your composer dependencies.
+                      Settings::setPdfRendererName(Settings::PDF_RENDERER_DOMPDF);
+                      // Any writable directory here. It will be ignored.
+                      Settings::setPdfRendererPath('.');
+                      $without_extension = pathinfo($documents->doc_name, PATHINFO_FILENAME);
+                      $path_to = public_path().'/files/'.$without_extension.'.pdf';
+
+                      $phpWord = \PhpOffice\PhpWord\IOFactory::load($path, 'Word2007');;
+                      $phpWord->save($path_to,'PDF');
+
+                      $content_types='application/pdf';
+
+                return response(file_get_contents($path_to),200)->header('Content-Type',$content_types);
+                   }elseif ($ext=='jpeg') {
                      $content_types='image/jpeg';  
+                   }elseif ($ext=='jpg') {
+                     $content_types='image/jpg';  
+                   }elseif ($ext=='png') {
+                     $content_types='image/png';  
                    }elseif ($ext=='txt') {
                      $content_types='text/plain charset=utf-8';  
                    }
@@ -159,9 +164,15 @@ class DocumentController extends Controller
 
     {
           EDocument::where('id',$id)->delete();
-          return redirect('/document')->with('delete-file','deleted');
-    } 
+          Workflow::where('id_doc',$id)->delete();
+          Workflowgroup::where('id_doc',$id)->delete();
+          Workflowparallel::where('id_doc',$id)->delete();
+          Workflowpooled::where('id_doc',$id)->delete();
 
+
+           return redirect()->back()->with('delete-file','deleted');  
+ 
+    }    
     /**
       Store documents in database
    */
