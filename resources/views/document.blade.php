@@ -3,8 +3,9 @@
 @section('content')
 <body>
  
-<?php ?>   
-<!----Top menu ----->
+<form>
+  <!----Top menu ----->
+
 <table width="100%" border="0" cellspacing="0" cellpadding="0">
      <tr>
           <td width="5%" align="left" class="subtitle_3"> </td>
@@ -12,7 +13,7 @@
                 <a class="list-group-item" href="{{url('listdocuments')}}"><i class="fa fa-list-ul" aria-hidden="true"></i>&nbsp; List of documents</a></td>
      @if(count($role) > 0)     
           @if($role->name=='Contributor' or $role->name=='Collaborator' or $role->name=='Coordinator')      
-          <td width="30%" align="left" class="subtitle_3">  <a class="list-group-item" href=" {{url('upload')}}"><i class="fa fa-plus" aria-hidden="true"></i>&nbsp; Add New document</a></td>
+          <td width="30%" align="left" class="subtitle_3">  <a class="list-group-item" id ="add_doc" href=" {{url('upload')}}"><i class="fa fa-plus" aria-hidden="true"></i>&nbsp; Add New document</a></td>
           <td width="30%" align="left" class="subtitle_3">  <a class="list-group-item" href="#"><i class="fa fa-book fa-fw" aria-hidden="true"></i>&nbsp; Compare documents</a></td>
           <td width="5%" align="left" class="subtitle_3"></td>
           @endif
@@ -26,7 +27,14 @@
             <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
                 File Deleted successfully
         </div>
-      @endif
+      @endif 
+      
+     @if(!empty(Session::get('WF-created')))
+          <div class="alert alert-success">
+              <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
+                  Workflow Started 
+          </div>
+     @endif
 
       @if(!empty(Session::get('WF-info')))
         <div class="alert alert-danger">
@@ -75,20 +83,20 @@
               <td>{{$document->doc_prepared_by}}</td>
               <td>{{$document->doc_status}}</td>
               <td>&nbsp;&nbsp;
-                  <a href="/detail/{{$document->id}}" title="detail" ><i class="fas fa-eye"></i></a>&nbsp;&nbsp;&nbsp;
+                  <a href="/detail/{{$document->id}}" id="detail_doc" title="detail" ><i class="fas fa-eye"></i></a>&nbsp;&nbsp;&nbsp;
                     <!-- Button Edit-->
-                  <a href="/update/{{$document->id}}" title="edit" ><i class="far fa-edit"></i></a>&nbsp;&nbsp;&nbsp;
+                  <a href="/update/{{$document->id}}" id="edit_doc" title="edit" ><i class="far fa-edit"></i></a>&nbsp;&nbsp;&nbsp;
 
                   @if($document->doc_status=='Not yet started')
                     <!-- Button Start Workflow-->
-                  <a href="/Typeworkflow/{{$document->id}}" title="start workflow" ><i class="fas fa-sitemap"></i></a>&nbsp;&nbsp;&nbsp;
+                  <a href="/Typeworkflow/{{$document->id}}" title="start workflow" id="wf"><i class="fas fa-sitemap"></i></a>&nbsp;&nbsp;&nbsp;
                   @else
                   <a href="/viewworkflow/{{$document->id}}" title="view workflow" ><i class="fas fa-sitemap"></i></a>&nbsp;&nbsp;&nbsp;
                   @endif
                   <a href="/workflow/{{$document->id}}" title="start workflow" hidden><i class="fas fa-sitemap"></i></a>&nbsp;&nbsp;&nbsp;
                    <a href="/workflowGroup/{{$document->id}}" title="start workflow" hidden><i class="fas fa-sitemap"></i></a>
                     <!-- Button Delete-->
-                  <a href="/delete/{{$document->id}}" title="delete" ><i class="fa fa-trash" aria-hidden="true"></i></a></td>
+                  <a href="/delete/{{$document->id}}" title="delete" id="delete_doc" ><i class="fa fa-trash" aria-hidden="true"></i></a></td>
                   
           </tr>
           @endforeach
@@ -97,7 +105,7 @@
 
    </table>    
          
-
+</form>
   <!-- Script of Datatable-->		
 <script type="text/javascript">
 

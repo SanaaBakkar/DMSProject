@@ -60,7 +60,7 @@ public function View_Workflow_detail($id)
  public function WFSingle($id)
  {
             $wftypes = DB::table('wftypes')->get();
-            $listUsers =DB::table('users')->get();
+            $listUsers =DB::table('users')->where('name','not like',Auth::user()->name)->get();
             $documents=EDocument::find($id);
 
 
@@ -92,7 +92,7 @@ public function WFgroup($id)
  public function WFparallel($id)
 {
          $wftypes = DB::table('wftypes')->get();
-         $listUsers =DB::table('users')->get();
+         $listUsers =DB::table('users')->where('name','not like',Auth::user()->name)->get();
          $documents=EDocument::find($id);
 
     
@@ -200,7 +200,7 @@ public function Add_Group_WF(Request $request,$id)
                 $workflow->due_date = $request->input('Date');
 
          /**** Search for users of each group ****/
-          $users = DB::select("select * from users where group_id=".$id_assign);
+          $users = DB::select("select * from users where group_id=".$id_assign." and name not like '".Auth::user()->name."'");
 
             if(isset($_POST['email'])){
 

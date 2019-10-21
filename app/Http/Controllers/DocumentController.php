@@ -157,6 +157,9 @@ class DocumentController extends Controller
                    }elseif ($ext=='txt') {
                      $content_types='text/plain charset=utf-8';  
                    }
+                   elseif ($ext=='zip') {
+                      $content_types = 'application/zip';
+                   }
       return response(file_get_contents($path),200)->header('Content-Type',$content_types);
     }
 

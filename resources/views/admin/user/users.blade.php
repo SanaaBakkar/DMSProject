@@ -56,15 +56,17 @@
       	     	<td>{{$user->id}}</td>
       	     	<td>{{$user->name}}</td>
       	     	<td>{{$user->email}}</td>
-              <td><!--{{$user->departement_id}}--></td>
+            <?php $department = App\Departement::find($user->departement_id) ?>
+              <td>{{$department->name}}</td>
+              <?php $role = App\Role::find($user->role_id) ?>
+              <td>{{$role->name}}</td>
               @if(!empty($user->group_id))
       	    <?php $group = App\Group::find($user->group_id) ?>
       	     	<td>{{$group->name}}</td>
               @else
               <td>None</td>
               @endif
-            <?php $role = App\Role::find($user->role_id) ?>
-      	     	<td>{{$role->name}}</td>
+            
       	     	
       	     	
       	     

@@ -12,29 +12,26 @@
           <p>{{$documents->doc_description}}.
                       </div>
     <input type="text" name="doc_name" value="{{$documents->doc_name}}" hidden="true"> 
-      </form>
     </div> 
   
 
 <?php   $file=public_path().'/files/'.$documents->doc_name; ?>
- <!--echo "<br><br>Contenu du fichier $file : "; ?>
-                  <iframe src="files/double.jpg" width="80%" height="80%" marginwidth=0 marginheight=0 hspace=0 vspace=0 scrolling="no" >
-                  </iframe>-->
+
 
   </div>
   <table align="right" width=20%>
   	<tr>
-  	  	<td ><a class="list-group-item" href="<?php public_path(); ?>/files/{{$documents->doc_name}}"><i class="fa fa-download" aria-hidden="true"></i>&nbsp;&nbsp;Download document</a> </td> 
+  	  	<td ><a class="list-group-item" href="<?php public_path(); ?>/files/{{$documents->doc_name}}" id="download_doc"><i class="fa fa-download" aria-hidden="true"></i>&nbsp;&nbsp;Download document</a> </td> 
   	</tr>
   	<tr>
-      	<td ><a class="list-group-item" href="/update/{{$documents->id}}"><i class="far fa-edit"></i>&nbsp;&nbsp;Edit Proprieties</a> </td> 	
+      	<td ><a class="list-group-item" href="/update/{{$documents->id}}" id="edit_doc"><i class="far fa-edit" "></i>&nbsp;&nbsp;Edit Proprieties</a> </td> 	
   	</tr>
     <tr>
         <td ><a class="list-group-item" href="/visualize/{{$documents->id}}"><i class="far fa-edit"></i>&nbsp;&nbsp;View doc </a> </td>   
     </tr>
     <tr>
       @if($documents->doc_status=='Not yet started')
-	     <td ><a class="list-group-item" href="/workflow/{{$documents->id}}"><i class="fas fa-sitemap"></i>&nbsp;&nbsp;Start workflow</a> </td> 
+	     <td ><a class="list-group-item" href="/workflow/{{$documents->id}}"><i class="fas fa-sitemap" id="start_wf"></i>&nbsp;&nbsp;Start workflow</a> </td> 
        @else
        <td ><a class="list-group-item" href="/viewworkflow/{{$documents->id}}"><i class="fas fa-sitemap"></i>&nbsp;&nbsp;View workflow</a> </td> 
        @endif
@@ -44,6 +41,7 @@
 
 <iframe src="/visualize/{{$documents->id}}" width="1300px" height="600px" style="margin: 0px 20px 0px 20px"></iframe>
  
+      </form>
 
 
 @endsection

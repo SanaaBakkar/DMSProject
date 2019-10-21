@@ -141,29 +141,18 @@ public function ShowTaskPooled($id)
 /* This part contain Calcul of percentage users who have approved */
 
    $percentage = $groupName->percentage;
+   $group= DB::table('groups')->where('name',$groupName->assign_to)->first();
 
-   $users = DB::select("select COUNT(*) as nbr from users where group_id=(select id from groups where name like '".$groupName->assign_to."')" );  
    
+   $NbrUsers  = DB::table('users')->where('group_id',$group->id)->where('name','not like',$groupName->created_by)->count();
 
-   //convert stdclass object to array
-    $user = json_decode(json_encode($users),true);
-    $NbrUsers="";
-
-        foreach ($user as $us) {
-          $NbrUsers=$us['nbr'];
-        }
+   
    
     $nbr_users_percentage = round($NbrUsers*($percentage/100),0);
 
-    $nbr_task_completed  =DB::select("select count(*) as nbrcomp FROM workflowgroups WHERE id_doc=".$id_doc." and status like 'Completed'");
+   
+    $nbr_task_completed = DB::table('workflowgroups')->where('id_doc',$id_doc)->where('status','Completed')->count();
 
-    $tasks_comp = json_decode(json_encode($nbr_task_completed),true);
-
-    $NbrTasksCompleted="";
-
-    foreach ($tasks_comp as $nbr) {
-      $NbrTasksCompleted=$nbr['nbrcomp'];
-    }
 
 
 /* Record name of all users who have approved in edocuments table at the end */
@@ -177,7 +166,7 @@ public function ShowTaskPooled($id)
     }
  
 
-  if ($NbrTasksCompleted==$nbr_users_percentage) {
+  if ($nbr_task_completed==$nbr_users_percentage) {
 
               $data_doc = array( 
                 'doc_status'=>'Completed',
@@ -302,7 +291,7 @@ public function SaveUserPooled($id,Request $request)
 
 }
 
-/* Disable Task when the user make done to it's completed task */
+/* Disable Task when the user make done to its completed task */
   public function DisableTask($id, Request $request)
   {
     $workflow = Workflow::find($id);

@@ -10,7 +10,7 @@
   <div class="dropdown-divider"></div>
 
   
-</div>
+</div> 
 
 
 
@@ -43,7 +43,7 @@
             @foreach($workflows_actives as $workflows_active)
           <tr style="height: 90px">
             <td width="10%"><i class="fa fa-list" aria-hidden="true"></i></td>
-            <td width="90%"><a href="task/{{$workflows_active->id}}" style="color: black; font-size: 17px">{{$workflows_active->description}}</a><br>
+            <td width="90%"><a href="task/{{$workflows_active->id}}" id="task_active" style="color: black; font-size: 17px">{{$workflows_active->description}}</a><br>
               <b>Due: </b>{{ $workflows_active->due_date}}&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;              
               <input type="text" name="id_doc" value="{{ $workflows_active->id_doc}}" hidden>
               <b>Started: </b>{{ $workflows_active->created_at}}<br>
@@ -76,7 +76,7 @@
                 @if($docs->doc_status!='Completed')
           <tr style="height: 90px">
             <td width="10%"><i class="fa fa-list" aria-hidden="true"></i></td>
-            <td width="90%"><a href="taskGroup/{{$workflowsGroup_active->id}}" style="color: black; font-size: 17px">{{$workflowsGroup_active->description}}</a><br>
+            <td width="90%"><a href="taskGroup/{{$workflowsGroup_active->id}}" id="task_active" style="color: black; font-size: 17px">{{$workflowsGroup_active->description}}</a><br>
               <div class="row">
                 <div class="col-md-6">
                   <b>Due: </b>{{ $workflowsGroup_active->due_date}}
@@ -106,7 +106,7 @@
        @foreach($workflowsParallel_actives as $workflowsParallel_active)
           <tr style="height: 90px">
             <td width="10%"><i class="fa fa-list" aria-hidden="true"></i></td>
-            <td width="90%"><a href="taskParallel/{{$workflowsParallel_active->id}}" style="color: black; font-size: 17px">{{$workflowsParallel_active->description}}</a><br>
+            <td width="90%"><a href="taskParallel/{{$workflowsParallel_active->id}}" id="task_active" style="color: black; font-size: 17px">{{$workflowsParallel_active->description}}</a><br>
                <div class="row">
                 <div class="col-md-6">
                   <b>Due: </b>{{ $workflowsParallel_active->due_date}}
@@ -144,7 +144,7 @@
                 @if($docs->doc_status!='Completed')
           <tr style="height: 90px">
             <td width="10%"><i class="fa fa-list" aria-hidden="true"></i></td>
-            <td width="90%"><a href="taskPooled/{{$workflowsPooled_active->id}}" style="color: black; font-size: 17px">{{$workflowsPooled_active->description}}</a><br>
+            <td width="90%"><a href="taskPooled/{{$workflowsPooled_active->id}}" id="task_active" style="color: black; font-size: 17px">{{$workflowsPooled_active->description}}</a><br>
               <div class="row">
                 <div class="col-md-6">
                   <b>Due: </b>{{ $workflowsPooled_active->due_date}}
@@ -187,7 +187,7 @@
 
           <tr style="height: 90px">
             <td width="10%"><i class="fa fa-list" aria-hidden="true"></i></td>
-            <td width="90%"><a href="CompletedTask/{{$workflows_comp->id}}" style="color: black; font-size: 17px">{{$workflows_comp->description}}</a><br>
+            <td width="90%"><a href="CompletedTask/{{$workflows_comp->id}}" id="task_completed" style="color: black; font-size: 17px">{{$workflows_comp->description}}</a><br>
 
               <div class="row">
                 <div class="col-md-6">

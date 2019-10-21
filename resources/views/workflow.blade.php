@@ -104,16 +104,7 @@
 				</i>
 			    </div><br>
 
-			<!--    <div id="removedoc" style="display: none;">
-			    	<select class="form-control" disabled> <option >No items selected</option></select>
-			    </div>-->
-
-        <!-- Trigger the modal with button Add: Code Modal above -->
-        <!--
-				<button type="button" class="btn btn-info" style="display: inline;" value="add" onclick="Show(this.value)" data-toggle="modal" data-target="#myModal">Add</button>
-				<button type="button" class="btn btn-danger" style="display: inline;" value="remove" onclick="Show(this.value)" >Remove</button><br><br>
--->
-				<b>Other Options:</b>
+						<b>Other Options:</b>
 				<input type="checkbox" name="email">Send email
 			</i><br>
 
@@ -122,64 +113,7 @@
 	        </div>
 	    <!-- End -->    
 
-        <!-- Review and approve (Group review)	    
-	         <div id="2" class="form-group" style="display: none;">
-	          <i class="list-group-item">
-
-	          	Description:<br>
-	          	 <textarea style="width: 80%; height: 20%" name="description" ></textarea><br><br>
-
-	          	<div class="row">
-                    <div class="col">
-    		          	 <label for="start"><i style="font-size:24px" class="fa">&#xf073;&nbsp;</i>Due:</label>
-    		          	   <input type="date" class="form-control" id="due" name="trip-start" placeholder="MM-DD-YY" style="width: 35%">
-    		         </div>
-                    <div class="col">
-				    	 Priority:
-				    	<select name="priority" class="form-control" style="width: 30%">
-					          	 	<option value="low">Low</option>
-					          	 	<option value="medium">Medium</option>
-					          	 	<option value="high">High</option>
-					     </select>
-                    </div>                    
-                </div>    <br>     	 
-
-				<b>Assignee</b><hr>
-				Review Group:* 
-				<button type="button" class="btn btn-info" style="display: inline;">Select</button><br><br>
-				
-				<b>Document</b>
-				<div id="doc" style="display: block;">
-				<i class="list-group-item">
-				<table>
-					<tr>
-						<td width="20%"><img height="50px" src="/img/fileicon.png" /></td>
-						<td width="60%">{{$documents->doc_name}} <br>
-							Description : {{ $documents->doc_description }}<br>
-							Modified on : {{ $documents->updated_at}}</td>
-					</tr>
-				</table>
-				</i>
-			    </div>
-			    
-			    <div id="removedoc" style="display: none;">
-			    	<select class="form-control" disabled> <option >No items selected</option></select>
-			    </div>
-
-				<button type="button" class="btn btn-info" style="display: inline;" value="add" onclick="Show(this.value)" >Add</button>
-				<button type="button" class="btn btn-danger" style="display: inline;" value="remove" onclick="Show(this.value)" >Remove</button><br><br>
-
-				<b>Other Options:</b>
-				<input type="checkbox" name="email">Send email
-			</i><br>
-
-			<input type="submit" class="btn btn-info" name="startwf" value="Start Workflow">
-	        <input type="reset" class="btn btn-danger" name="cancel" value="Cancel">
-	        </div>
-	      
-
-	   End -->    
-
+       
 	      </form>
 	</div> 
 </div>

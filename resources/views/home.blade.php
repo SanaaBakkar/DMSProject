@@ -151,7 +151,7 @@
 
                   @foreach($documents as $document)
                     <?php  ?>
-                    <p class="card-text"><a href="task/" style="color: black; font-size: 17px">{{$document->doc_name}}</a></p>
+                    <p class="card-text"><a href="detail/{{$document->id}}" style="color: black; font-size: 17px">{{$document->doc_name}}</a></p>
                     <p style="font-size: 11px"> 
                     <?php
                             $today = new DateTime();

@@ -72,7 +72,7 @@
        
        </div>
         <div class="modal-footer">
-           <button type="button" class="btn btn-info" data-dismiss="modal">Save</button>
+           <button type="button" class="btn btn-info" id="Save" data-dismiss="modal">Save</button>
           <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
        </div>
     </div>
@@ -93,7 +93,7 @@
        <div class="row">
           <div class="col">
               <label for="start"><i style="font-size:24px" class="fa">&#xf073;&nbsp;</i>Due:</label>
-              <input type="date" class="form-control" id="due" name="Date" placeholder="MM-DD-YY" style="width: 35%" required>
+              <input type="date" class="form-control" id="due" name="Date" placeholder="MM-DD-YY" min="<?php echo date('Y-m-d') ?>" style="width: 35%" required>
            </div>
            <div class="col">
 		        Priority:
@@ -107,7 +107,7 @@
 
         <b>Assignee</b><hr>
         Assign to:* 
-        <input type="button" name="id_user" class="btn btn-info" data-toggle="modal" data-target="#myModal" value="Select" required><br><br>
+        <input type="button" id="select_users" name="id_user" class="btn btn-info" data-toggle="modal" data-target="#myModal" value="Select" required><br><br>
         
         <b>Document</b>
         <div id="doc" style="display: block;">
@@ -130,7 +130,7 @@
       </i><br>
 
 
-      <input type="submit" class="btn btn-info" name="startwf" value="Start Workflow">
+      <input type="submit" class="btn btn-info" id="start_wf" name="startwf" value="Start Workflow">
       <input type="reset" class="btn btn-danger" name="cancel" value="Cancel">
           </div>
                  

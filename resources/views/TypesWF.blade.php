@@ -20,7 +20,7 @@
                  Please fil out the assignee to field
           </div>
              @endif
-
+<form>
    <div id="type" style="display: block">
             <label><b>Workflow: </b></label>
             <select class="form-control" name="typeWF" onChange="ShowHide(this.value)" style="width: 35%; display: inline;">
@@ -30,6 +30,7 @@
                               <?php endforeach; ?>
             </select>
     </div>
+</form>
 
 
   </div>

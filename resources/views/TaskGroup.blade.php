@@ -65,7 +65,7 @@
                 <td colspan="3"><b>Comment:</b> <bR><textarea name="comment" class="form-control" ></textarea></td>
             </tr>
         </table>
-            <button type="submit" class="btn btn-primary" name="btn-Save">Save</button>
+            <button type="submit" class="btn btn-primary" id="Save" name="btn-Save">Save</button>
 
         </i>
     </form>

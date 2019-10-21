@@ -42,7 +42,9 @@ class AdminController extends Controller
     {
         $listgroups = Group::all();
         $listroles = Role::all();
-        return view('admin.user.adduser',compact('listgroups','listroles'));
+        $listdepartments = Departement::all();
+
+        return view('admin.user.adduser',compact('listgroups','listroles','listdepartments'));
     }
 
     public function SaveUser(Request $request)
@@ -53,12 +55,15 @@ class AdminController extends Controller
                 'email'=>'required',
                 'admin'=>'required',
                 'password'=>'required',
+                'department_id'=>'required',
                 'role_id'=>'required']);
 
             $user= new User;
             $user->name= ucfirst($request->input('name'));
             $user->email=  $request->input('email');
+            $user->departement_id = $request->input('department_id');
             $user->role_id= $request->input('role_id');
+            $user->group_id = $request->input('group_id');
             $user->password= bcrypt($request->input('password')) ;
             $user->admin= $request->input('admin');
               
@@ -83,10 +88,13 @@ class AdminController extends Controller
         $group_user = Group::find($user->group_id);
         $listgroups = Group::where('id','<>',$user->group_id)->get();
 
+        $department_user = Departement::find($user->departement_id);
+        $listdepartments = Departement::where('id','<>',$user->departement_id)->get();
+
         $role_user = Role::find($user->role_id);        
         $listroles = Role::where('id','<>',$user->role_id)->get();
 
-        return view('admin.user.UpdateUser',compact('user','group_user','listgroups','listroles','role_user'));
+        return view('admin.user.UpdateUser',compact('user','group_user','listgroups','department_user','listdepartments','listroles','role_user'));
     }
 
     public function EditUser(Request $request,$id)
@@ -94,15 +102,16 @@ class AdminController extends Controller
        $this->validate($request,[
                 'name'=>'required',
                 'email'=>'required',
-                'group_name'=>'required',
+                'department_name'=>'required',
                 'role_id'=>'required',
                 'isadmin'=>'required'
             ]);
             $data= array(
                 'name'=>$request->input('name'),
                 'email'=>$request->input('email'),
-                'group_id'=>$request->input('group_name'),
+                'departement_id'=>$request->input('department_name'),
                 'role_id'=>$request->input('role_id'),
+                'group_id'=>$request->input('group_name'),
                 'admin'=>$request->input('isadmin')
             );
             User::where('id',$id)->update($data);

@@ -9,12 +9,6 @@
             <h3><i class="list-group-item"><i class="fas fa-sitemap"></i>&nbsp;&nbsp; Start Workflow</i></h3><hr>
           </div>
 
-             @if(!empty(Session::get('info-phone')))
-          <div class="alert alert-success">
-              <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
-                  Workflow Started 
-          </div>
-             @endif
 
               @if(!empty(Session::get('Error-info')))
         <div class="alert alert-danger">
@@ -60,7 +54,7 @@
                     <tr>
                       <td align="left" class="subtitle_3">{{$listGroup->name}}</td>
 
-                      <td align="right"><input type="checkbox" name="id_group" value ="{{$listGroup->id}}" ></input></td>
+                      <td align="right"><input type="radio" name="id_group" value ="{{$listGroup->id}}" ></input></td>
                     </tr>
                             <?php  endforeach; ?>
                 </table>  
@@ -73,7 +67,7 @@
        
        </div>
         <div class="modal-footer">
-           <button type="button" class="btn btn-info" data-dismiss="modal">Save</button>
+           <button type="button" id="Save" class="btn btn-info" data-dismiss="modal">Save</button>
           <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
        </div>
     </div>
@@ -95,7 +89,7 @@
               <div class="row">
                     <div class="col">
                      <label for="start"><i style="font-size:24px" class="fa">&#xf073;&nbsp;</i>Due:</label>
-                       <input type="date" class="form-control" id="Date" name="Date" placeholder="MM-DD-YY" style="width: 35%">
+                       <input type="date" class="form-control" id="Date" name="Date" placeholder="MM-DD-YY" min="<?php echo date('Y-m-d') ?>" style="width: 35%">
                  </div>
                     <div class="col">
                Priority:
@@ -109,7 +103,7 @@
 
         <b>Assignee</b><hr>
         Review Group:*    
-        <input type="button" name="id_group" class="btn btn-info" data-toggle="modal" data-target="#myModalGroup" value="Select" required><br><br>
+        <input type="button" id="select_group" name="id_group" class="btn btn-info" data-toggle="modal" data-target="#myModalGroup" value="Select" required><br><br>
         
         Required approval Percentage*:
 
@@ -132,18 +126,11 @@
         </i>
           </div>
           
-         <!-- <div id="removedoc" style="display: none;">
-            <select class="form-control" disabled> <option >No items selected</option></select>
-          </div>
-
-        <button type="button" class="btn btn-info" style="display: inline;" value="add" onclick="Show(this.value)" >Add</button>
-        <button type="button" class="btn btn-danger" style="display: inline;" value="remove" onclick="Show(this.value)" >Remove</button><br><br> -->
-
         <b>Other Options:</b>
         <input type="checkbox" name="email">Send email
       </i><br>
 
-      <input type="submit" class="btn btn-info" name="group_button" value="Start workflow">
+      <input type="submit" class="btn btn-info" name="group_button" id="start_wf" value="Start workflow">
           <input type="reset" class="btn btn-danger" name="cancel" value="Cancel">
           </div>
         

@@ -23,18 +23,15 @@ use App\Models\User;
 | contains the "web" middleware group. Now create something great!
 |
 */
- 
-Route::get('/', function () {
-    return view('welcome');
-});
+
 
 Auth::routes();
 
-Route::get('/', 'HomeController@index')->name('home');
+Route::get('/home', 'HomeController@index');
 
 Route::get('admin', 'HomeController@admin')->middleware('admin');
 
-
+ 
 /*Route::get('/upload','DocumentController@viewaDocuments');
 Route::post('/insert','DocumentController@upload');*/
 
@@ -74,7 +71,7 @@ Route::post('workflowPooled/{id}','WorkflowController@Add_user_WF');
 
 Route::get('viewworkflow/{id}','WorkflowController@View_Workflow_detail');
 
-
+ 
 
 /******************* Task Part ***********************/
 Route::get('/task','TaskController@Home');
@@ -97,8 +94,6 @@ Route::post('/taskPooled/{id}','TaskController@SaveUserPooled');
 
 
 Route::get('/admin', 'AdminController@index');
-Route::get('/users', 'AdminController@ShowUsers');
-Route::get('/groups', 'AdminController@ShowGroups');
 Route::get('/departments', 'AdminController@ShowDepartments');
 
 Route::get('/alldocuments', 'AdminController@ShowDocuments');
@@ -108,6 +103,7 @@ Route::get('/GroupWF', 'AdminController@ShowGroupWF');
 Route::get('/ParallelWF', 'AdminController@ShowParallelWF');
 
 /*******Crud Operation: User ********/
+Route::get('/users', 'AdminController@ShowUsers');
 Route::get('/updateuser/{id}', 'AdminController@UpdateUser');
 Route::post('/edituser/{id}', 'AdminController@EditUser');
 Route::get('AddUser','AdminController@AddUser');
@@ -121,6 +117,7 @@ Route::post('/editdepartment/{id}', 'AdminController@EditDepartment');
 Route::get('/deletedepartment/{id}', 'AdminController@DeleteDepartment');
 
 /*******Crud Operation: Group ********/
+Route::get('/groups', 'AdminController@ShowGroups');
 Route::post('/savegroup','AdminController@SaveGroup');
 Route::get('/updategroup/{id}', 'AdminController@UpdateGroup');
 Route::post('/editgroup/{id}', 'AdminController@EditGroup');

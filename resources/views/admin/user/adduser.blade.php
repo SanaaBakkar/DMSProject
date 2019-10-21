@@ -26,6 +26,15 @@
 				</div>	
 
 				<div class="col-sm-4" style="margin: 20px 0px 0px 0px">
+					Department Name :<select class="custom-select mr-sm-2" name="department_id" required>
+						            	 <option value="" disabled selected>Choose a department</option>
+										@foreach($listdepartments as $department)
+										<option value="{{$department->id}}">{{$department->name}}</option>
+										@endforeach
+								</select>
+				</div>
+
+				<div class="col-sm-4" style="margin: 20px 0px 0px 0px">
 					Groupe Name :<select class="custom-select mr-sm-2" name="group_id" >
 					            	 <option value="" disabled selected>Choose a group</option>
 									@foreach($listgroups as $group)
@@ -42,19 +51,22 @@
 									@endforeach
 							</select>
 				</div>	
-
-				<div class="col-sm-4" style="margin: 20px 0px 10px 0px">
+				
+					<br>
+			
+			<div class="col-sm-4" style="margin: 20px 0px 10px 0px">
 					It is an admin? <select class="custom-select mr-sm-2" name="admin" required>
 					            	    <option value="" disabled selected>Admin</option>
 									    <option value="1">Yes</option>
 									    <option value="0">No</option>
 									</select>
 									
-				</div>	<br>
-			
-			<div class="col-sm-4">
-				<input type="submit" name="Save" class="btn btn-primary" value="Save">	
 			</div>
+
+			<div class="col-sm-4" style="margin: 100px 0px 0px 0px;" >
+				<input type="submit" name="Save" class="btn btn-primary" style="float: center;" value="Save">	
+			</div>
+
 			</div><br>
 	</i>	
 		</form>		

@@ -71,8 +71,8 @@
        
        </div>
         <div class="modal-footer">
-           <button type="button" class="btn btn-info" data-dismiss="modal">Save</button>
-          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+           <button id="save" type="button" class="btn btn-info" data-dismiss="modal">Save</button>
+          <button type="button" id="close" class="btn btn-default" data-dismiss="modal">Close</button>
        </div>
     </div>
   </div>
@@ -92,7 +92,7 @@
               <div class="row">
                     <div class="col">
                      <label for="start"><i style="font-size:24px" class="fa">&#xf073;&nbsp;</i>Due:</label>
-                       <input type="date" class="form-control" id="due" name="Date" placeholder="MM-DD-YY" style="width: 35%" required>
+                       <input type="date" class="form-control" id="due" name="Date" placeholder="MM-DD-YY" min="<?php echo date('Y-m-d') ?>" style="width: 35%" required>
                  </div>
                     <div class="col">
                Priority:
@@ -106,7 +106,7 @@
 
         <b>Assignee</b><hr>
         Assign to:* 
-        <input type="button" name="id_user" class="btn btn-info" data-toggle="modal" data-target="#myModal" value="Select" required><br><br>
+        <input type="button" id="select_user" name="id_user" class="btn btn-info" data-toggle="modal" data-target="#myModal" value="Select" required><br><br>
         
         <b>Document</b>
         <div id="doc" style="display: block;">
@@ -122,21 +122,13 @@
         </i>
           </div><br>
 
-      <!--    <div id="removedoc" style="display: none;">
-            <select class="form-control" disabled> <option >No items selected</option></select>
-          </div>-->
-
-        <!-- Trigger the modal with button Add: Code Modal above -->
-        <!--
-        <button type="button" class="btn btn-info" style="display: inline;" value="add" onclick="Show(this.value)" data-toggle="modal" data-target="#myModal">Add</button>
-        <button type="button" class="btn btn-danger" style="display: inline;" value="remove" onclick="Show(this.value)" >Remove</button><br><br>
--->
+     
         <b>Other Options:</b>
         <input type="checkbox" id="email" name="email">Send email
       </i><br>
 
 
-      <input type="submit" class="btn btn-info" name="startwf" value="Start Workflow">
+      <input type="submit" class="btn btn-info" id="startwf" name="startwf" value="Start Workflow">
           <input type="reset" class="btn btn-danger" name="cancel" value="Cancel">
           </div>
                  
@@ -194,29 +186,4 @@
 
 
 
-
-<!--public function AddWF(Request $request,$id)
-{
-             $documents=EDocument::find($id);
-
-        $this->validate($request, [
-                'type_WF'=>'required',
-                'description'=>'required',
-                'priority'=>'required',
-                'id_user'=>'required'
-
-            ]);
-
-    $workflow = new Workflow;
-    $workflow->type = $request->input('type_WF');
-    $workflow->description = $request->input('description');
-    $workflow->priority = $request->input('priority');
-    $workflow->id_user = $request->input('id_user');
-
-
-redirect('workflow');
-}
-Route::post('workflow/{id}','WorkflowController@AddWF');
-
--->
 

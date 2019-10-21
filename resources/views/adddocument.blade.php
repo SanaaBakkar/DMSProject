@@ -22,7 +22,7 @@
 
   <div class="input-group hdtuto control-group lst increment" >
 
-    <input type="file" name="doc_name[]" class="myfrm form-control"><br><br><br>
+    <input type="file" name="doc_name[]" id="upload_doc" class="myfrm form-control" ><br><br><br>
 
        <div class="form-group">
               <label >Description:</label><br>
@@ -33,7 +33,7 @@
 
 
   </div>
-</form>        
+</form>         
 </i>
 
 </div>

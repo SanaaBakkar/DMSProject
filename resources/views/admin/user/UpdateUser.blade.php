@@ -17,20 +17,37 @@
 					Name:<input type="text" class="form-control" name="name" value="{{$user->name}}" />
 				</div>
 
-				<div class="col-sm-2">
-				</div>	
-
-				<div class="col-sm-6">
+				<div class="col-sm-4">
 					Email: <input type="email" name="email" class="form-control" value="{{$user->email}}">
 				</div>	
 
+				<div class="col-sm-4">
+					Department Name : <select class="custom-select mr-sm-2" name="department_name">
+								@if(!empty($user->departement_id))
+									<option value="{{$department_user->id}}" selected>{{$department_user->name}}</option>
+									
+								@else
+									 <option value="" disabled selected>None</option>
+									@foreach($listdepartments as $department)
+									<option value="{{$department->id}}">{{$department->name}}</option>
+									@endforeach
+								@endif	
+								</select>
+				</div>	
+
 				<div class="col-sm-4" style="margin: 20px 0px 0px 0px">
+					
 					Groupe Name :<select class="custom-select mr-sm-2" name="group_name">
+								@if(!empty($group_user->id))
 									<option value="{{$group_user->id}}" selected>{{$group_user->name}}</option>
+								@else
+									 <option value="" disabled selected>None</option>
 									@foreach($listgroups as $group)
 									<option value="{{$group->id}}">{{$group->name}}</option>
 									@endforeach
+								@endif	
 								</select>
+							
 				</div>	
 
 				<div class="col-sm-4" style="margin: 20px 0px 0px 0px">
