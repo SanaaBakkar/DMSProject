@@ -16,10 +16,10 @@ class GroupWorkflowTest extends DuskTestCase
     {
         $this->browse(function($browser){        
            $browser->visit('/login')
-                 ->type('email','admin@dms.com')
+                 ->type('email','sanae.bakkar@gmail.com')
                  ->type('password','adminadmin')
                  ->press('Login')
-                 ->assertPathIs('/home')
+                 ->assertPathIs('/')
                  ->pause(1000)
                  ->press('#my_doc')
                  ->assertVisible('#wf')
@@ -32,7 +32,7 @@ class GroupWorkflowTest extends DuskTestCase
                     ->press('#start_wf')
                     ->pause(500)
                     ->type('description','test assign a new task to a group ')
-                    ->type('Date','08-30-2019')
+                    ->type('Date','02-02-2020')
                     ->select('priority','medium')
                     ->pause(500)
                     ->press('#select_group')
@@ -41,14 +41,16 @@ class GroupWorkflowTest extends DuskTestCase
                     $modal
                     ->assertSee('Groups list')
                     ->radio('id_group','2')
+                    ->pause(500)
                     ->press('#Save')
                     ->driver->executeScript('window.scrollTo(0, 400);');
             });   
 
-          $browser->type('percentage','50')
+          $browser->pause(2000)
+                  ->assertSee('Required approval Percentage')
+                  ->type('percentage','50')
                   ->pause(500)
                   ->press('#start_wf')
-                  ->assertSee('Workflow Started')
                   ->pause(2000);
         });
     }
@@ -65,6 +67,7 @@ class GroupWorkflowTest extends DuskTestCase
                         $browser->attribute('#navbarDropdown','href')
                             )
                     ->press('#navbarDropdown')
+                    ->press('#navbarDropdown')
                     ->press('#logout')
                     ->assertPathIs('/login')
                     ->pause(1000);
@@ -78,10 +81,10 @@ class GroupWorkflowTest extends DuskTestCase
     {
         $this->browse(function($browser){
              $browser->visit('/login')
-                    ->type('email','sanae.bakkar@gmail.com')
+                    ->type('email','sanae.bakkar95@gmail.com')
                     ->type('password','adminadmin')
                     ->press('Login')
-                    ->assertPathIs('/home')
+                    ->assertPathIs('/')
                     ->assertVisible('#tasks')
                     ->visit(
                         $browser->attribute('#tasks','href')
@@ -102,13 +105,14 @@ class GroupWorkflowTest extends DuskTestCase
                         $browser->attribute('#navbarDropdown','href')
                             )
                     ->press('#navbarDropdown')
+                    ->press('#navbarDropdown')
                     ->press('#logout')
                     ->assertPathIs('/login')
                     ->pause(1000)
-                    ->type('email','sanae.bakkar95@gmail.com')
+                    ->type('email','user2@gmail.com')
                     ->type('password','adminadmin')
                     ->press('Login')
-                    ->assertPathIs('/home')
+                    ->assertPathIs('/')
                     ->assertVisible('#tasks')
                     ->visit(
                         $browser->attribute('#tasks','href')
@@ -123,7 +127,15 @@ class GroupWorkflowTest extends DuskTestCase
                     ->press('#Save')
                     ->pause(2000)
                     ->assertSee('Worfklow Updated successfully')
-                    ->pause(500);
+                    ->pause(500)
+                    ->assertVisible('#navbarDropdown')
+                    ->visit(
+                        $browser->attribute('#navbarDropdown','href')
+                            )
+                    ->press('#navbarDropdown')
+                    ->press('#navbarDropdown')
+                    ->press('#logout')
+                    ->assertPathIs('/login');
         });
     }
 
@@ -134,10 +146,10 @@ class GroupWorkflowTest extends DuskTestCase
     {
         $this->browse(function(Browser $browser){
             $browser->visit('/login')
-                    ->type('email','admin@dms.com')
+                    ->type('email','sanae.bakkar@gmail.com')
                     ->type('password','adminadmin')
                     ->press('Login')
-                    ->assertPathIs('/home')
+                    ->assertPathIs('/')
                     ->assertVisible('#tasks')
                     ->visit(
                         $browser->attribute('#tasks','href')

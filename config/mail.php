@@ -56,7 +56,7 @@ return [
     */
 
     'from' => [
-        'address' => env('MAIL_FROM_ADDRESS', 'sanaa.bakkar@gmail.com'),
+        'address' => env('MAIL_FROM_ADDRESS', 'sanae.bakkar@gmail.com'),
         'name' => env('MAIL_FROM_NAME', 'Workflow message'),
     ],
 

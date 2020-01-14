@@ -15,10 +15,10 @@ class PooledWorkflowTest extends DuskTestCase
     {
         $this->browse(function($browser){        
            $browser->visit('/login')
-                 ->type('email','admin@dms.com')
+                 ->type('email','sanae.bakkar@gmail.com')
                  ->type('password','adminadmin')
                  ->press('Login')
-                 ->assertPathIs('/home')
+                 ->assertPathIs('/')
                  ->pause(1000)
                  ->press('#my_doc')
                  ->assertVisible('#wf')
@@ -31,7 +31,7 @@ class PooledWorkflowTest extends DuskTestCase
                     ->press('#start_wf')
                     ->pause(500)
                     ->type('description','test assign a pooled task to a group ')
-                    ->type('Date','08-30-2019')
+                    ->type('Date','02-02-2020')
                     ->select('priority','medium')
                     ->pause(500)
                     ->press('#select_group')
@@ -40,6 +40,7 @@ class PooledWorkflowTest extends DuskTestCase
                     $modal
                     ->assertSee('Groups list')
                     ->radio('id_group','2')
+                    ->pause(500)
                     ->press('#Save')
                     ->driver->executeScript('window.scrollTo(0, 400);');
             });   
@@ -63,6 +64,7 @@ class PooledWorkflowTest extends DuskTestCase
                         $browser->attribute('#navbarDropdown','href')
                             )
                     ->press('#navbarDropdown')
+                    ->press('#navbarDropdown')
                     ->press('#logout')
                     ->assertPathIs('/login')
                     ->pause(1000);
@@ -77,10 +79,10 @@ class PooledWorkflowTest extends DuskTestCase
     {
         $this->browse(function($browser){
              $browser->visit('/login')
-                    ->type('email','sanae.bakkar@gmail.com')
+                    ->type('email','user2@gmail.com')
                     ->type('password','adminadmin')
                     ->press('Login')
-                    ->assertPathIs('/home')
+                    ->assertPathIs('/')
                     ->assertVisible('#tasks')
                     ->visit(
                         $browser->attribute('#tasks','href')
@@ -101,6 +103,7 @@ class PooledWorkflowTest extends DuskTestCase
                         $browser->attribute('#navbarDropdown','href')
                             )
                     ->press('#navbarDropdown')
+                    ->press('#navbarDropdown')
                     ->press('#logout')
                     ->assertPathIs('/login')
                     ->pause(1000);
@@ -115,10 +118,10 @@ class PooledWorkflowTest extends DuskTestCase
     {
         $this->browse(function(Browser $browser){
             $browser->visit('/login')
-                    ->type('email','admin@dms.com')
+                    ->type('email','sanae.bakkar@gmail.com')
                     ->type('password','adminadmin')
                     ->press('Login')
-                    ->assertPathIs('/home')
+                    ->assertPathIs('/')
                     ->assertVisible('#tasks')
                     ->visit(
                         $browser->attribute('#tasks','href')

@@ -20,6 +20,11 @@ class CreateRolesTable extends Migration
         });
     }
 
+    public function CreateRoles()
+    {
+        # code...
+    }
+
     /**
      * Reverse the migrations.
      *

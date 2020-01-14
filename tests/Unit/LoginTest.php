@@ -41,7 +41,7 @@ class LoginTest extends TestCase
 
         $this->visit('/login')
              ->type('test','email')
-             ->type('slslsldk','password')
+             ->type('wrong','password')
              ->press('Login')
              ->seePageIs('/login');
     }
@@ -52,8 +52,8 @@ class LoginTest extends TestCase
     public function test_mismatch_data()
     {
         $this->visit('/login')
-             ->type('admin@dms.com','email')
-             ->type('slslsldk','password')
+             ->type('sanae.bakkar@gmail.com','email')
+             ->type('wrong','password')
              ->press('Login')
              ->seePageIs('/login');
     }
@@ -65,9 +65,9 @@ class LoginTest extends TestCase
     {
     
         $this->visit('/login')
-             ->type('admin@dms.com','email')
+             ->type('sanae.bakkar@gmail.com','email')
              ->type('adminadmin','password')
              ->press('Login')
-             ->seePageIs('/home');
+             ->seePageIs('/');
     }
 }

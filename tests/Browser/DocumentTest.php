@@ -12,24 +12,26 @@ use App\Edocument;
 
 class DocumentTest extends DuskTestCase
 {
+/********** Run :  php artisan dusk tests/Browser/DocumentTest.php  **************/
+
     /**
-     * Test correct data .
+     * Test correct data . 
      **/
     public function test_correct_data()
     {
         $this->browse(function($browser){        
            $browser->visit('/login')
-                 ->type('email','admin@dms.com')
+                 ->type('email','sanae.bakkar@gmail.com')
                  ->type('password','adminadmin')
                  ->press('Login')
-                 ->assertPathIs('/home')
+                 ->assertPathIs('/')
                  ->pause(1000);
         }); 
     }
 
     /**
      * Test upload file .
-     *
+     */
     public function test_upload_document()
     {
         $this->browse(function($browser){
@@ -39,12 +41,13 @@ class DocumentTest extends DuskTestCase
                     $browser->attribute('#add_doc', 'href')
                            )
                                        
-                    ->attach('#upload_doc','C:\Users\PC\Desktop\poster.png')
+                    ->attach('#fileToUpload','C:\Users\Délégués\Desktop\git-logo.jpg')
                     ->press('Submit') 
                     ->assertSee('Your file has been successfully added')                      
                     ->pause(1000);
         });
     }
+
 
     /**
      * Test view and update document .
@@ -53,10 +56,7 @@ class DocumentTest extends DuskTestCase
      {
          $this->browse(function($browser){
             $browser->visit('/document')
-                    ->assertVisible('#detail_doc')
-                    ->visit(
-                        $browser->attribute('#detail_doc','href')
-                            )
+                    ->click('a[href="detail/5"]')
                     ->assertPathIsNot('/document')
                     ->assertVisible('#edit_doc')
                     ->visit(
@@ -66,22 +66,24 @@ class DocumentTest extends DuskTestCase
                     ->assertSee('Edit document')
                     ->type('description', '')
                     ->pause(500)
-                    ->type('description','test1')
+                    ->type('description','Unit test')
                     ->pause(500)
                     ->press('update')  
-                    ->assertSee('Document updated successefully !');
+                    ->assertSee('Document updated successefully !')
+                    ->pause(500);
 
              });
      }
 
      /**
      * Test delete document .
-     **/
+     **
+     */
      public function test_delete_document()
      {
          $this->browse(function($browser){
             $browser->visit('/document')
-                    ->click('a[href="/delete/27"]')
+                    ->click('a[href="/delete/5"]')
                     ->pause(500)
                     ->assertSee('File Deleted successfully');
          });

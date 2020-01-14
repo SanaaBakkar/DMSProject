@@ -23,13 +23,18 @@ use App\Models\User;
 | contains the "web" middleware group. Now create something great!
 |
 */
-
+ if (version_compare(PHP_VERSION, '7.2.0', '>=')) {
+// Ignores notices and reports all other kinds... and warnings
+error_reporting(E_ALL ^ E_NOTICE ^ E_WARNING);
+// error_reporting(E_ALL ^ E_WARNING); // Maybe this is enough
+}
 
 Auth::routes();
 
-Route::get('/home', 'HomeController@index');
+Route::get('/', 'HomeController@home');
 
 Route::get('admin', 'HomeController@admin')->middleware('admin');
+Route::get('documentation', 'HomeController@documentation');
 
  
 /*Route::get('/upload','DocumentController@viewaDocuments');
@@ -41,7 +46,8 @@ Route::get('/document', 'DocumentController@listDocuments');
 Route::get('/listdocuments', 'DocumentController@AllDocuments');
 
 Route::get('upload','DocumentController@create');
-Route::post('upload','DocumentController@store');
+//Route::post('upload','DocumentController@store');
+Route::post('upload','DocumentController@uploadFilePost');
 
 Route::get('delete/{id}','DocumentController@deletefile');
 
@@ -50,7 +56,7 @@ Route::get('detail/{id}','DocumentController@detailsfile');
 Route::get('update/{id}','DocumentController@update');
 Route::post('edit/{id}','DocumentController@edit');
 
-Route::get('visualize/{id}','DocumentController@viewdoc');
+Route::get('visualize/{id}','DocumentController@previewdoc');
 
 
 /****************** Workflow part ********************/
@@ -136,5 +142,12 @@ Route::get('/deletetype/{id}', 'AdminController@DeleteType');
 /*******View Workflow ********/
 Route::get('/ViewWF/{id}', 'AdminController@View_WF_Detail');
 
+/*******Favorite Feature ********/
 
+Route::get('favorite/{id}', 'DocumentController@FavoriteDoc');
+Route::get('unfavorite/{id}', 'DocumentController@UnFavoriteDoc');
+Route::get('my_favorites', 'DocumentController@ListFavorites');
 
+/*******Settings ********/
+Route::get('settings', 'UserController@index');
+Route::post('editUserProfile/{id}','UserController@EditUserProfile');

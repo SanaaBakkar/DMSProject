@@ -15,10 +15,10 @@ class ParallelWorkflowTest extends DuskTestCase
     {
         $this->browse(function($browser){        
            $browser->visit('/login')
-                 ->type('email','admin@dms.com')
+                 ->type('email','sanae.bakkar@gmail.com')
                  ->type('password','adminadmin')
                  ->press('Login')
-                 ->assertPathIs('/home')
+                 ->assertPathIs('/')
                  ->pause(1000)
                  ->press('#my_doc')
                  ->assertVisible('#wf')
@@ -31,7 +31,7 @@ class ParallelWorkflowTest extends DuskTestCase
                     ->press('#start_wf')
                     ->pause(500)
                     ->type('description','test assign a new task to a parallel users  ')
-                    ->type('Date','08-30-2019')
+                    ->type('Date','02-02-2020')
                     ->select('priority','medium')
                     ->pause(500)
                     ->press('#select_users')
@@ -39,14 +39,16 @@ class ParallelWorkflowTest extends DuskTestCase
             {
                     $modal
                     ->assertSee('Users list')
-                    ->check('id_user[]','3')
-                    ->check('id_user[]','4')
+                    ->check('id_user[]','2')
+                    ->check('id_user[]','5')
+                    ->pause(500)
                     ->press('#Save')
                     ->driver->executeScript('window.scrollTo(0, 400);');
             });   
 
             $browser->pause(500)
                     ->press('#start_wf')
+                    ->pause(500)
                     ->assertSee('Workflow Started')
                     ->pause(2000);
         });        
@@ -65,6 +67,7 @@ class ParallelWorkflowTest extends DuskTestCase
                         $browser->attribute('#navbarDropdown','href')
                             )
                     ->press('#navbarDropdown')
+                    ->press('#navbarDropdown')
                     ->press('#logout')
                     ->assertPathIs('/login')
                     ->pause(1000);
@@ -81,7 +84,7 @@ class ParallelWorkflowTest extends DuskTestCase
                     ->type('email','sanae.bakkar95@gmail.com')   //User 1
                     ->type('password','adminadmin')
                     ->press('Login')
-                    ->assertPathIs('/home')
+                    ->assertPathIs('/')
                     ->assertVisible('#tasks')
                     ->visit(
                         $browser->attribute('#tasks','href')
@@ -102,13 +105,14 @@ class ParallelWorkflowTest extends DuskTestCase
                         $browser->attribute('#navbarDropdown','href')
                             )
                     ->press('#navbarDropdown')
+                    ->press('#navbarDropdown')
                     ->press('#logout')
                     ->assertPathIs('/login')
                     ->pause(1000)
-                    ->type('email','ga.analytics.wordpress@gmail.com')   //User 2
+                    ->type('email','user2@gmail.com')   //User 2
                     ->type('password','adminadmin')
                     ->press('Login')
-                    ->assertPathIs('/home')
+                    ->assertPathIs('/')
                     ->assertVisible('#tasks')
                     ->visit(
                         $browser->attribute('#tasks','href')
@@ -123,7 +127,15 @@ class ParallelWorkflowTest extends DuskTestCase
                     ->press('#Save')
                     ->pause(2000)
                     ->assertSee('Worfklow Updated successfully')
-                    ->pause(500);
+                    ->pause(500)
+                    ->assertVisible('#navbarDropdown')
+                    ->visit(
+                        $browser->attribute('#navbarDropdown','href')
+                            )
+                    ->press('#navbarDropdown')
+                    ->press('#navbarDropdown')
+                    ->press('#logout')
+                    ->assertPathIs('/login');
         });
     }
 
@@ -134,10 +146,10 @@ class ParallelWorkflowTest extends DuskTestCase
     {
         $this->browse(function(Browser $browser){
             $browser->visit('/login')
-                    ->type('email','admin@dms.com')
+                    ->type('email','sanae.bakkar@gmail.com')
                     ->type('password','adminadmin')
                     ->press('Login')
-                    ->assertPathIs('/home')
+                    ->assertPathIs('/')
                     ->assertVisible('#tasks')
                     ->visit(
                         $browser->attribute('#tasks','href')

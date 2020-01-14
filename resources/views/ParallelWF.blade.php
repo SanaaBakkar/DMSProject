@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.apps')
 @section('content')
  
 <div class="container">
@@ -26,8 +26,8 @@
         
         <div id="type" style="display: block">
             <label><b>Workflow: </b></label>
-            <select class="form-control" name="typeWF" onChange="ShowHide(this.value)" style="width: 35%; display: inline;">
-                <option value="Choose">Please select a workflow</option>
+            <select name="typeWF" onChange="ShowHide(this.value)" style="width: 35%; display: inline;">
+                <option value="Choose">{{ $actual_wf->name }}</option>
                               <?php foreach ($wftypes as $wftype): ?>
                 <option value="{{$wftype->id}}">{{$wftype->name}}</option>
                               <?php endforeach; ?>
@@ -82,7 +82,7 @@
 <!--- End Modal --->  
       <!-- Parallel Review & Approve-->  
        
-  <div id="3" class="form-group" style="display: block;">
+  <div id="3" class="form-group" style="display: block; border-style: groove; padding-bottom: 10px">
           
        <i class="list-group-item">              
        <label><b>Parallel Review & Approve</b></label><br>

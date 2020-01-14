@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.apps')
 @section('content')
 
 
@@ -7,30 +7,43 @@
 
 <h3 class="well"><img height="50px" src="/img/AddFileIcon.ico">&nbsp;Add a document </h3><hr>
 
-  @if(!empty(Session::get('add-success')))
+  @if(!empty(Session::get('success')))
           <div class="alert alert-success">
               <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
                  Your file has been successfully added
           </div>
   @endif
 
+  @if (count($errors) > 0)
+          <div class="alert alert-danger">
+              <strong>Whoops!</strong> There were some problems with your input.<br><br>
+                <ul>
+                     @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                     @endforeach
+                </ul>
+          </div>
+  @endif
 
 <i class="list-group-item">
 <form method="post" action="{{url('upload')}}" enctype="multipart/form-data">
 
   {{csrf_field()}}
 
-  <div class="input-group hdtuto control-group lst increment" >
+  <div class="input-group hdtuto control-group lst increment">
 
-    <input type="file" name="doc_name[]" id="upload_doc" class="myfrm form-control" ><br><br><br>
-
-       <div class="form-group">
-              <label >Description:</label><br>
-              <textarea rows="3" cols="100" name="description" value="description"></textarea>
+      <input type="file" class="form-control-file" id="fileToUpload" name="fileToUpload" aria-describedby="fileHelp">
+      <small id="fileHelp" class="form-text text-muted">Please upload your file. Size of the file should not be more than 2MB.</small><br><br>
+                            
+                            
+      <div class="form-group">
+            <label >Description:</label><br>
+            <textarea rows="3" cols="100" name="description" value="description"></textarea>
       </div>
+  </div>
 
-      <button type="submit" class="btn btn-primary" style="margin-top:10px">Submit</button>
-
+  <div class="col-lg-3 col-md-4 ftco-animate fadeInUp ftco-animated">
+            <button type="submit" class="btn btn-secondary">Submit</button>
 
   </div>
 </form>         
@@ -57,7 +70,6 @@
 </script>
 
 
-</
 
 </html>
 

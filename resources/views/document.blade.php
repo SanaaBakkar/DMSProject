@@ -1,25 +1,7 @@
-@extends('layouts.app')
+@extends('layouts.apps')
 
 @section('content')
-<body>
  
-<form>
-  <!----Top menu ----->
-
-<table width="100%" border="0" cellspacing="0" cellpadding="0">
-     <tr>
-          <td width="5%" align="left" class="subtitle_3"> </td>
-          <td width="30%" align="left" class="subtitle_3"> 
-                <a class="list-group-item" href="{{url('listdocuments')}}"><i class="fa fa-list-ul" aria-hidden="true"></i>&nbsp; List of documents</a></td>
-     @if(count($role) > 0)     
-          @if($role->name=='Contributor' or $role->name=='Collaborator' or $role->name=='Coordinator')      
-          <td width="30%" align="left" class="subtitle_3">  <a class="list-group-item" id ="add_doc" href=" {{url('upload')}}"><i class="fa fa-plus" aria-hidden="true"></i>&nbsp; Add New document</a></td>
-          <td width="30%" align="left" class="subtitle_3">  <a class="list-group-item" href="#"><i class="fa fa-book fa-fw" aria-hidden="true"></i>&nbsp; Compare documents</a></td>
-          <td width="5%" align="left" class="subtitle_3"></td>
-          @endif
-      @endif    
-    </tr>
- </table><br>
 
 <!--- Messages Info --->
     @if(!empty(Session::get('delete-file')))
@@ -57,55 +39,109 @@
       @endif
 
 <!---Table of documents  --->      
-    <table id="dtBasicExample" class="table table-striped table-bordered table-sm" cellspacing="0" width="95%" style="margin: 0px 0px 0px 30px">
+<form>
+<div style="margin: 10px 10px; border-style: groove; ">
+   <div class="row">
 
-         <thead>
+     <div class="col-6 col-md-2">
+        <h5>Documents</h5>
+        <a href="{{url('listdocuments')}}" style="margin-left:1em">All Documents</a><br>
+        <a href="{{url('document')}}" style="margin-left:1em">My Documents</a><br>
+        <a href="#" style="margin-left:1em">I'm Editing</a><br>
+        <a href="{{url('my_favorites')}}" style="margin-left:1em">Favorite</a> 
+     </div>
+
+     <div class="col-12 col-md-8">
+       @if($role->name=='Contributor' or $role->name=='Collaborator' or $role->name=='Coordinator')      
+         <a class="list-group-item" id ="add_doc" href=" {{url('upload')}}"><i class="fa fa-plus" aria-hidden="true"></i>&nbsp; Add New document</a>
+       @endif
+        <table id="dtBasicExample" class="table table-striped table-bordered table-sm" cellspacing="0" style="margin: 0px 0px 0px 30px">
+          <thead>
             <tr>
-              <th>N° </th>
-              <th>Title </th>
-               <th>Description</th>
-              <th>Date </th>
-              <th>Created by </th>
-              <th>Status </th>
-              <th>Action </th>
+              <th>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+
+           @foreach($documents as $document)
+       <?php    
+             $today = new DateTime();
+             $date_created  = new DateTime($document->updated_at);
+             $days = $date_created->diff($today);
+        ?>
+            <tr>
+              <td>
+                <div class="row">
+                  <div class="col-2">
+                    <a href="detail/{{$document->id}}" id="#detail_doc"><img src="/img/document.png" style="width: 80%"></a>
+                  </div>
+
+                  <div class="col-10">
+                    <a href="detail/{{$document->id}}" target="_blank">{{$document->doc_name}}</a><br> 
+
+                    <!-- Display Date of creation and last update if it exists -->  
+                    @empty($document->doc_reviewed_by)
+
+                      <?php echo $days->format('Created %a days ago by '. $document->doc_prepared_by ); ?><br>
+
+                    @endempty
+
+                    @isset ($document->doc_reviewed_by)
+
+                      <?php echo $days->format('Modified %a days ago by '.$document->doc_reviewed_by ); ?><br>
+
+                     @endisset
+                     <!-- End of Date Display --> 
+
+                      {{$document->doc_description}}<br>
+
+          <!-- Testing if the document belong to the favorites --> 
+          <?php $favorite= App\Favorite::where('document_id',$document->id)->first(); ?>
+
+            @if(empty($favorite))
+                    <!-- Button Favorite-->                      
+                  <a href="/favorite/{{$document->id}}" class="text-dark" title="favorite_doc" ><i class="fa fa-heart" ></i> Favorite</a>&nbsp;&nbsp;
+            @else
+              <!-- Button Favorite-->                      
+                  <a href="/unfavorite/{{$document->id}}" class="text-dark" title="favorite_doc"  ><i class="fa fa-heart" style="color: red"></i> Favorite</a>&nbsp;&nbsp;
+            @endif
+          <!-- End Testing --> 
+          
+                    <!-- Button Edit-->
+                  <a href="/update/{{$document->id}}" class="text-dark" title="edit" id="edit_doc" ><i class="fa fa-edit" aria-hidden="true"> Edit</i></a>&nbsp;&nbsp;
+
+                    <!-- Button Start Workflow-->
+                  @if($document->doc_status=='Not yet started')
+                   <a href="/Typeworkflow/{{$document->id}}" class="text-dark" title="start workflow" id="wf"><i class="fas fa-sitemap">Start Workflow</i></a> &nbsp;&nbsp;
+
+                  @else
+
+                  <a href="/viewworkflow/{{$document->id}}" class="text-dark" title="view workflow" ><i class="fas fa-sitemap">View Workflow</i></a>&nbsp;&nbsp;
+                  @endif
+
+                   <!-- Button Delete-->
+                  <a href="/delete/{{$document->id}}" class="text-dark" title="delete" id="delete_doc" ><i class="fa fa-trash" >Delete </i></a>&nbsp;&nbsp;
+
+                   <!-- Document ID-->
+                  <a href="/workflowGroup/{{$document->id}}" title="start workflow" hidden><i class="fas fa-sitemap"></i></a>
+                  
+
+                  </div>
+                </div>       
+
+              </td>
 
             </tr>
-        </thead>
-        <tbody>
-           @foreach($documents as $document)
-          <tr>
+              @endforeach
+         </table>
+       </div>
+    </div>
+  </div>  
 
-              <td>{{$document->id}}</td>
-              <td width="30%"><a href="visualize/{{$document->id}}"  target="_blank">
-              {{$document->doc_name}}</a></td>
-              <td width="20%">{{$document->doc_description}}</td>
-              <td>{{$document->created_at}}</td>
-              <td>{{$document->doc_prepared_by}}</td>
-              <td>{{$document->doc_status}}</td>
-              <td>&nbsp;&nbsp;
-                  <a href="/detail/{{$document->id}}" id="detail_doc" title="detail" ><i class="fas fa-eye"></i></a>&nbsp;&nbsp;&nbsp;
-                    <!-- Button Edit-->
-                  <a href="/update/{{$document->id}}" id="edit_doc" title="edit" ><i class="far fa-edit"></i></a>&nbsp;&nbsp;&nbsp;
-
-                  @if($document->doc_status=='Not yet started')
-                    <!-- Button Start Workflow-->
-                  <a href="/Typeworkflow/{{$document->id}}" title="start workflow" id="wf"><i class="fas fa-sitemap"></i></a>&nbsp;&nbsp;&nbsp;
-                  @else
-                  <a href="/viewworkflow/{{$document->id}}" title="view workflow" ><i class="fas fa-sitemap"></i></a>&nbsp;&nbsp;&nbsp;
-                  @endif
-                  <a href="/workflow/{{$document->id}}" title="start workflow" hidden><i class="fas fa-sitemap"></i></a>&nbsp;&nbsp;&nbsp;
-                   <a href="/workflowGroup/{{$document->id}}" title="start workflow" hidden><i class="fas fa-sitemap"></i></a>
-                    <!-- Button Delete-->
-                  <a href="/delete/{{$document->id}}" title="delete" id="delete_doc" ><i class="fa fa-trash" aria-hidden="true"></i></a></td>
-                  
-          </tr>
-          @endforeach
-        </tbody>
-                      
-
-   </table>    
-         
+  
 </form>
+
   <!-- Script of Datatable-->		
 <script type="text/javascript">
 

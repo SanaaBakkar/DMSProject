@@ -20,7 +20,7 @@ class CreateEtypdocsTable extends Migration
             $table->boolean('typdoc_status')->default('0');
            $table->timestamps();
         });
-    }
+    } 
 
     /**
      * Reverse the migrations.

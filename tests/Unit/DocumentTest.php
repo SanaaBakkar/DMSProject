@@ -13,25 +13,25 @@ use Illuminate\Http\File;
 
 class DocumentTest extends TestCase
 {
-    
-    /**
+    /******** To Run Test : vendor/bin/phpunit tests/Unit/DocumentTest.php  **********/
+    /** 
      *  test upload file
      **
     public function test_upload_file()
     {
         $this->visit('/login')
-             ->type('admin@dms.com','email')
+             ->type('sanae.bakkar@gmail.com','email')
              ->type('adminadmin','password')
              ->press('Login')
-             ->seePageIs('/home');
+             ->seePageIs('/');
 
         //create a file from local disk
-        $exampleFile = new File('C:\Users\PC\Desktop\poster.png');
-        //copy that file to projectroot/storage/app/uploads-unittest folder
-        Storage::putFileAs('/uploads-unittest', $exampleFile, 'test-pic.png');
+        $exampleFile = new File('C:\Users\Délégués\Desktop\git-logo.jpg');
+        //copy that file to projectroot/storage/app/public/uploads-unittest folder
+        Storage::putFileAs('/uploads-unittest', $exampleFile, 'test-picture.jpg');
 
         //check whether file exists in path
-        Storage::assertExists('/uploads-unittest/test-pic.png');
+        Storage::assertExists('/uploads-unittest/test-picture.jpg');
        
     }
 
@@ -41,10 +41,10 @@ class DocumentTest extends TestCase
      public function test_update_document()
      {
         $this->visit('/login')
-             ->type('admin@dms.com','email')
+             ->type('sanae.bakkar@gmail.com','email')
              ->type('adminadmin','password')
              ->press('Login')
-             ->seePageIs('/home')
+             ->seePageIs('/')
              ->click('#my_doc')
              ->seePageIs('/document')
              ->click('#edit_doc')
@@ -54,24 +54,24 @@ class DocumentTest extends TestCase
              ->press('update');
 
 
-     }*/
+     }
 
 
     /**
      * Test delete document .
-     **
+     **/
      public function test_delete_document()
      {
         $this->visit('/login')
-             ->type('admin@dms.com','email')
+             ->type('sanae.bakkar@gmail.com','email')
              ->type('adminadmin','password')
              ->press('Login')
-             ->seePageIs('/home')
+             ->seePageIs('/')
              ->click('#my_doc')
              ->seePageIs('/document')
              ->click('#delete_doc');
         
-     }*/
+     }
 
 
 

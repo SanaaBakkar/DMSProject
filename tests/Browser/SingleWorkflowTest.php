@@ -9,22 +9,23 @@ use Illuminate\Foundation\Testing\DatabaseMigrations;
 class SingleWorkflowTest extends DuskTestCase
 {
      /**
-     * Connect with admin account.
+     * Connect with user account.
      */
     public function test_correct_data()
     {
         $this->browse(function($browser){        
            $browser->visit('/login')
-                 ->type('email','admin@dms.com')
+                 ->type('email','sanae.bakkar@gmail.com')
                  ->type('password','adminadmin')
                  ->press('Login')
-                 ->assertPathIs('/home')
+                 ->assertPathIs('/')
                  ->pause(1000);
         }); 
     }
 
     /**
     *Test Process of a single workflow
+     NOTE: we use check('email') to test email
     */
 
     public function test_single_wf()
@@ -40,7 +41,7 @@ class SingleWorkflowTest extends DuskTestCase
                     ->type('description','test assign a new task to a single assign')
                     ->press('#startwf')
                     ->pause(500)
-                    ->type('Date','08-30-2019')
+                    ->type('Date','02-02-2020')
                     ->select('priority','medium')
                     ->press('#select_user')
                     ->whenAvailable('.modal', function ($modal) 
@@ -52,15 +53,18 @@ class SingleWorkflowTest extends DuskTestCase
                     ->driver->executeScript('window.scrollTo(0, 400);');
             });
 
-            $browser->assertSee('Send email')
-                    ->check('email')
+         
+           $browser ->pause(2000)
+                    ->assertSee('Send email')
                     ->pause(2000)
                     ->press('#startwf');
                                                     
         });
     } 
-
-    public function test_logout_user()
+    /**
+    *User Logout
+    */
+    public function test_logout1_user()
     {
         $this->browse(function (Browser $browser) {
             $browser->visit('/document')
@@ -69,11 +73,12 @@ class SingleWorkflowTest extends DuskTestCase
                         $browser->attribute('#navbarDropdown','href')
                             )
                     ->press('#navbarDropdown')
+                    ->press('#navbarDropdown')
                     ->press('#logout')
                     ->assertPathIs('/login')
                     ->pause(1000);
              }); 
-    }**/
+    }
 
     /**
     * Complete a Task 
@@ -83,10 +88,10 @@ class SingleWorkflowTest extends DuskTestCase
     {
         $this->browse(function (Browser $browser) {
             $browser->visit('/login')
-                    ->type('email','sanae.bakkar@gmail.com')
+                    ->type('email','sanae.bakkar95@gmail.com')
                     ->type('password','adminadmin')
                     ->press('Login')
-                    ->assertPathIs('/home')
+                    ->assertPathIs('/')
                     ->assertVisible('#tasks')
                     ->visit(
                         $browser->attribute('#tasks','href')
@@ -100,10 +105,29 @@ class SingleWorkflowTest extends DuskTestCase
                     ->type('comment',"seen, it's ok ")
                     ->pause(2000)
                     ->press('#Save')
-                    ->assertSee('Worfklow Updated successfully');
+                    ->assertSee('Worfklow Updated successfully')
+                    ;
              }); 
     }
 
+     /**
+    *User Logout
+    */
+    public function test_logout2_user()
+    {
+        $this->browse(function (Browser $browser) {
+            $browser->visit('/document')
+                    ->assertVisible('#navbarDropdown')
+                    ->visit(
+                        $browser->attribute('#navbarDropdown','href')
+                            )
+                    ->press('#navbarDropdown')
+                    ->press('#navbarDropdown')
+                    ->press('#logout')
+                    ->assertPathIs('/login')
+                    ->pause(1000);
+             }); 
+    }
     /**
     * Task done
     */
@@ -112,10 +136,10 @@ class SingleWorkflowTest extends DuskTestCase
     {
         $this->browse(function(Browser $browser){
             $browser->visit('/login')
-                    ->type('email','admin@dms.com')
+                    ->type('email','sanae.bakkar@gmail.com')
                     ->type('password','adminadmin')
                     ->press('Login')
-                    ->assertPathIs('/home')
+                    ->assertPathIs('/')
                     ->assertVisible('#tasks')
                     ->visit(
                         $browser->attribute('#tasks','href')

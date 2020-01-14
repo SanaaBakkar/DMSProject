@@ -34,7 +34,6 @@ public function workflow($id)
 
 public function View_Workflow_detail($id)
 {
-   $documents = EDocument::find($id);
 
   /*** Detail about a single review  ***/
    $WorkflowSingle = DB::table('workflows')
@@ -45,21 +44,22 @@ public function View_Workflow_detail($id)
    $type1 = Wftype::where('id',$WorkflowSingle->id_type)->first();
 
    /*** Detail about a group review and approve***/
-   $WorkflowGroup = Workflowgroup::where('id_doc',$documents->id)->get();
+   $WorkflowGroup = Workflowgroup::where('id_doc',$id)->get();
 
   /*** Detail about a parallel review and approve***/
-   $WorkflowParallel = Workflowparallel::where('id_doc',$documents->id)->get();
+   $WorkflowParallel = Workflowparallel::where('id_doc',$id)->get();
 
 /*** Detail about a parallel review and approve***/
-   $WorkflowPooled = Workflowpooled::where('id_doc',$documents->id)->get();
+   $WorkflowPooled = Workflowpooled::where('id_doc',$id)->get();
 
   return view('ViewWorkflow',compact('documents','WorkflowSingle','type1','WorkflowGroup','WorkflowParallel','WorkflowPooled'));
 }
 
 
  public function WFSingle($id)
- {
-            $wftypes = DB::table('wftypes')->get();
+ {   
+            $actual_wf = DB::table('wftypes')->where('id','1')->first();
+            $wftypes = DB::table('wftypes')->where('id','<>','1')->get();
             $listUsers =DB::table('users')->where('name','not like',Auth::user()->name)->get();
             $documents=EDocument::find($id);
 
@@ -67,7 +67,7 @@ public function View_Workflow_detail($id)
 			if ($documents->doc_status=='Not yet started') 
          {
 
-      return view('/SingleWF',compact('documents','listUsers','wftypes'));
+      return view('/SingleWF',compact('documents','listUsers','actual_wf','wftypes'));
        
          }else{
    	  return redirect('/document')->with('WF-info','Already started');
@@ -78,35 +78,37 @@ public function View_Workflow_detail($id)
 
 public function WFgroup($id)
  {
-     
-         $wftypes = DB::table('wftypes')->get();
+         $actual_wf = DB::table('wftypes')->where('id','2')->first();
+         $wftypes = DB::table('wftypes')->where('id','<>','2')->get();
          $listGroups = DB::table('groups')->get();
          $documents=EDocument::find($id);
 
      
-    return view('/GroupWF',compact('documents','listGroups','wftypes'));
+    return view('/GroupWF',compact('documents','listGroups','actual_wf','wftypes'));
            
 }
 
 
  public function WFparallel($id)
 {
-         $wftypes = DB::table('wftypes')->get();
+         $actual_wf = DB::table('wftypes')->where('id','3')->first();
+         $wftypes = DB::table('wftypes')->where('id','<>','3')->get();
          $listUsers =DB::table('users')->where('name','not like',Auth::user()->name)->get();
          $documents=EDocument::find($id);
 
     
-    return view('/ParallelWF',compact('documents','listUsers','wftypes'));
+    return view('/ParallelWF',compact('documents','listUsers','actual_wf','wftypes'));
  }  
 
 public function WFpooled($id)
 {
-         $wftypes = DB::table('wftypes')->get();
+         $actual_wf = DB::table('wftypes')->where('id','4')->first();
+         $wftypes = DB::table('wftypes')->where('id','<>','4')->get();
          $listGroups = DB::table('groups')->get();
          $documents=EDocument::find($id);
 
     
-    return view('/PooledWF',compact('documents','listGroups','wftypes'));
+    return view('/PooledWF',compact('documents','listGroups','actual_wf','wftypes'));
 }
 
 public function TypesWF(Request $request,$id)
@@ -348,7 +350,7 @@ public function Add_user_WF(Request $request,$id)
                 $workflow->due_date = $request->input('Date');
 
          /**** Search for users of each group ****/
-          $users = DB::select("select * from users where group_id=".$id_assign);
+          $users = DB::select("select * from users where group_id=".$id_assign." and name not like '".Auth::user()->name."'");
 
             if(isset($_POST['email'])){
 

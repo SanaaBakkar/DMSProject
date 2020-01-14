@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use App\Edocument;
 
 class User extends Authenticatable
 {
@@ -36,4 +37,12 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    /**
+ * Get all of favorite documents for the user.
+ */
+    public function favorites()
+    {
+        return $this->belongsToMany(Edocument::class, 'favorites', 'user_id', 'document_id')->withTimeStamps();
+    }
 }

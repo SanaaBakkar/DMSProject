@@ -8,10 +8,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <title>DMS Project</title>
-        <link rel="stylesheet" type="text/css" href="{{ asset('css/bootstrap.css') }}"/>
-
-
-    
+      <link rel="stylesheet" type="text/css" href="{{ asset('css/bootstrap.css') }}"/>
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
@@ -22,7 +19,7 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
    <!-- font awesome-->
-   <link rel="dns-prefetch" href="https://fonts.gstatic.com">
+    <link rel="dns-prefetch" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css?family=Raleway:300,400,600" rel="stylesheet" type="text/css">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
     
@@ -34,13 +31,13 @@
 
     <script type="text/javascript">
 
-<!--
-function ouverture()
-{
-window.open("/document", "ouverture", "toolbar=no, status=yes, scrollbars=yes, resizable=no, width=200, height=100");
-}
-//-->
-</SCRIPT>
+    <!--
+    function ouverture()
+    {
+    window.open("/document", "ouverture", "toolbar=no, status=yes, scrollbars=yes, resizable=no, width=200, height=100");
+    }
+    //-->
+    </SCRIPT>
 
 <!-- Matomo -->
 <script type="text/javascript">
@@ -63,7 +60,7 @@ window.open("/document", "ouverture", "toolbar=no, status=yes, scrollbars=yes, r
 <body>
     <div id="app">
 <nav class="navbar navbar-expand-lg " style="background-color: #151414; height: 50px">
-                <a class="navbar-brand" href="{{ url('/') }}">
+                <a class="navbar-brand" href="{{ url('/home') }}">
                     <h3> DMS Project </h3>
                 </a>
                 
@@ -105,8 +102,7 @@ window.open("/document", "ouverture", "toolbar=no, status=yes, scrollbars=yes, r
                   </li>
                   <li class="nav-item">
                     @if(Auth::user()->admin == 1)
-                      <a class="nav-link" href="{{url('/admin')}}">Administration</a>     
-                       @endif                        
+                      <a class="nav-link" href="{{url('/admin')}}">Administration</a> @endif                        
                   </li>
              </ul>
               </div> 

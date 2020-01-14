@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.apps')
 @section('content')
 
 <div class="container">
@@ -65,7 +65,7 @@
             
         <tr>
                 
-            <td colspan="3"><b>Comment:</b> <bR><textarea name="comment" class="form-control" ></textarea></td>
+            <td colspan="3"><b>Comment:</b> <bR><textarea name="comment" class="form-control" style="border-color: black" ></textarea></td>
         </tr>
     </table>
             <button type="submit" class="btn btn-primary" id="Save" name="btn-Save">Save</button>

@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.apps')
 
 @section('content')
 <div class="container">
@@ -6,7 +6,7 @@
                 <h3><i class="list-group-item"><i class="fas fa-sitemap"></i>&nbsp;&nbsp; Detail Task:</i></h3><hr>
     </div>
 
- @if(count($Workflow) >0)
+ @if(isset($Workflow->id))
       <form method="post" action="{{ url('/CompletedTask',array($Workflow->id)) }}">
       	          {{csrf_field()}}
 

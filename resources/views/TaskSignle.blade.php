@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.apps')
 @section('content')
 <div class="container">
 	
@@ -6,7 +6,7 @@
                 <h3><i class="list-group-item"><i class="fas fa-sitemap"></i>&nbsp;&nbsp; Edit Task:</i></h3><hr>
     </div>
 
- @if(count($workflow) >0)
+ @if(count($workflow)>0)
     <form method="post" action="{{ url('/task',array($workflow->id)) }}">
       	          {{csrf_field()}}
 
@@ -59,7 +59,7 @@
             
             <tr>
             	
-            	<td colspan="3"><b>Comment:</b> <bR><textarea name="comment" class="form-control" ></textarea></td>
+                <td colspan="3"><b>Comment:</b> <bR><textarea name="comment" class="form-control" style="border-color: black" ></textarea></td>
             </tr>
         </table>
             <button type="submit" class="btn btn-primary" id="Save" name="btn-Save">Save</button>

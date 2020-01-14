@@ -16,6 +16,8 @@ use App\Workflow;
 use App\Workflowgroup;
 use App\Workflowparallel;
 use App\Workflowpooled;
+use App\Favorite;
+
 
 use PhpOffice\PhpWord\Settings;
 
@@ -27,10 +29,10 @@ class DocumentController extends Controller
         return redirect('/document');
     }
 
-
+ 
    public function AllDocuments()
    {
-      $alldocs = Edocument::all(); 
+      $alldocs = Edocument::where('doc_status','not like','Completed')->where('doc_status','not like','Done')->get(); 
       $role = Role::find(Auth::user()->role_id);
 
    	  return view('/alldocuments',compact('alldocs','role'));
@@ -38,81 +40,60 @@ class DocumentController extends Controller
    }
 
 
- public function listDocuments()
+   public function listDocuments()
    {
 
 	  $documents = Edocument::where('doc_prepared_by',Auth::User()->name)->get();   
-	   $role = Role::find(Auth::user()->role_id);
+	  $role = Role::find(Auth::user()->role_id);
 
 	  return view('/document',['documents'=>$documents],['role'=>$role]);
 	
    }
 
-
-
  
-    
-    /**
-    Upload document
-     */
-
-    public function create()
+   public function create()
 
     {
         return view('adddocument');
     }
 
+    
+    /**
+       Upload document
+     */
 
-     public function store(Request $request)
+    public function uploadFilePost(Request $request){
 
-    {
+        $request->validate([
+            'fileToUpload' => 'required|file|max:1024',
+        ]);
 
-        $this->validate($request, [
-                'doc_name' => 'required',
-                'doc_name.*' => 'mimes:doc,pdf,docx,zip,txt,jpeg,png'
-                                                          ]);
+        $name = $request->file('fileToUpload')->getClientOriginalName();
+        $extension = $request->file('fileToUpload')->getClientOriginalExtension();
+       
 
-        if($request->hasfile('doc_name'))
-
-         { 
-           foreach($request->file('doc_name') as $file)
-
-            {
-                $name=$file->getClientOriginalName();
-                /*$type=$file->getClientMimeType();
-                $typedoc= new Etypdoc();
-                $typedoc->typdoc_title = $type;
-                $typedoc->extension = substr(strrchr($name,'.'),1);
-                $typedoc->save();*/
-                $extension = $file->getExtension();
-
-                $file->move(public_path().'/files/', $name);  
-                $url = Storage::url($name);
-
-            }
-         }
-               
-               
+        $request->file('fileToUpload')->storeAs('files',date("dmY").'_'.$name);
    
-               $file= new Edocument();
-               $file->doc_name=$name;
-               $file->doc_prepared_by = Auth::user()->name;
+        $file= new Edocument();
+        $file->doc_name=date("dmY").'_'.$name;
+        $file->doc_prepared_by = Auth::user()->name;
+        $file->doc_status='Not yet started';
 
-               if (!empty($_POST['description'])) {
-                     $file->doc_description=$_POST['description'];
-               }else{
-                     $file->doc_description='No description';
-               }
+        if (!empty($_POST['description'])) 
+        {
+              $file->doc_description=$_POST['description'];
+        }else
+        {
+              $file->doc_description='No description';
+        }
 
-               $file->doc_status='Not yet started';
+        
+  /*get the id of the type from etypdoc table and store it into document table*/
+        $type = DB::table('etypdocs')->where('extension', strtoupper($extension))->first();
+        $file->typdoc_id = $type->id;
+        $file->save();
 
- /*get the id of the type from etypdoc table and store it into document table*/
-          $typ = DB::table('etypdocs')->where('extension', substr(strrchr($name,'.'),1))->first();
-          $file->typdoc_id = $typ->id;
-
-               $file->save();
-
-     return redirect('/upload')->with('add-success', 'Data Your file has been successfully added');
+        return back()->with('success','You have successfully upload file.');
 
     }
 
@@ -124,44 +105,56 @@ class DocumentController extends Controller
           return view('detailsfile',['documents'=>$documents]);          
     }
 
-    public function viewdoc($id)
-    {       
-          $documents = EDocument::find($id);
-          $path = public_path().'/files/'.$documents->doc_name;
-          $ext =File::extension($path);
-              
-                if($ext=='pdf'){
-                    $content_types='application/pdf';
-                   }elseif ($ext=='doc') {
-                     $content_types='application/msword';  
-                   }elseif ($ext=='docx') {
-                      // Make sure you have `dompdf/dompdf` in your composer dependencies.
-                      Settings::setPdfRendererName(Settings::PDF_RENDERER_DOMPDF);
-                      // Any writable directory here. It will be ignored.
-                      Settings::setPdfRendererPath('.');
-                      $without_extension = pathinfo($documents->doc_name, PATHINFO_FILENAME);
-                      $path_to = public_path().'/files/'.$without_extension.'.pdf';
+  /**
+      preview documents
+   */  
 
-                      $phpWord = \PhpOffice\PhpWord\IOFactory::load($path, 'Word2007');;
-                      $phpWord->save($path_to,'PDF');
+    public function previewdoc($id)
+    {
+      $documents = EDocument::find($id);
+      $path = Storage::disk('public')->path('public/files/'.$documents->doc_name);
+      $type = Etypdoc::find($documents->typdoc_id);
+          
+     if ($type->extension=='DOCX') {
+      // Make sure you have `dompdf/dompdf` in your composer dependencies.
+      // Set PDF renderer.
+          Settings::setPdfRendererName(Settings::PDF_RENDERER_DOMPDF);
+          Settings::setPdfRendererPath('.');
+   
+          $path_to = $path.'.pdf';
 
-                      $content_types='application/pdf';
+          $phpWord = \PhpOffice\PhpWord\IOFactory::load($path, 'Word2007');;
+          $phpWord->save($path_to,'PDF');
 
-                return response(file_get_contents($path_to),200)->header('Content-Type',$content_types);
-                   }elseif ($ext=='jpeg') {
-                     $content_types='image/jpeg';  
-                   }elseif ($ext=='jpg') {
-                     $content_types='image/jpg';  
-                   }elseif ($ext=='png') {
-                     $content_types='image/png';  
-                   }elseif ($ext=='txt') {
-                     $content_types='text/plain charset=utf-8';  
-                   }
-                   elseif ($ext=='zip') {
-                      $content_types = 'application/zip';
-                   }
-      return response(file_get_contents($path),200)->header('Content-Type',$content_types);
+          $content_types='application/pdf'; 
+
+        return response(file_get_contents($path_to),200)->header('Content-Type',$content_types);
+     }
+
+      switch ($type->extension) {
+          case 'PDF':
+            $content_types='application/pdf';
+            break;
+          case 'JPG':
+            $content_types='image/jpg';
+            break;
+          case 'PNG':
+            $content_types='image/jpg';
+            break;
+          case 'TXT':
+            $content_types='text/plain; charset=iso-8859-1';  
+            break;
+          case 'ZIP':
+            $content_types = 'application/zip'; 
+            break;
+          default:
+            # code...
+            break;
+      }
+  
+     return response()->file($path, ['Content-Type' => $content_types]);
     }
+
 
    public function deletefile($id)
 
@@ -172,8 +165,7 @@ class DocumentController extends Controller
           Workflowparallel::where('id_doc',$id)->delete();
           Workflowpooled::where('id_doc',$id)->delete();
 
-
-           return redirect()->back()->with('delete-file','deleted');  
+        return redirect()->back()->with('delete-file','deleted');  
  
     }    
     /**
@@ -209,7 +201,6 @@ class DocumentController extends Controller
 
 
 
-
    public function DocToAdd(Request $request)
     {           
 
@@ -219,12 +210,43 @@ class DocumentController extends Controller
             ]);
 
        $doc = new Edocument;
-            $doc->id= $request->input('{{$listDoc->id}}');
-        $verify=Edocument::where('id', $doc->id)->get();
+       $doc->id= $request->input('{{$listDoc->id}}');
+       $verify=Edocument::where('id', $doc->id)->get();
 
         return view('workflow')->with('verify',$verify);
 
    }
+/**
+ * Favorite a particular post
+ *
+ */
+    public function FavoriteDoc($id)
+    {
 
+        Auth::user()->favorites()->attach($id);
 
+        return back();
+    }
+
+/**
+ * Unfavorite a particular document
+ *
+ */
+    public function UnFavoriteDoc($id)
+    {
+        Auth::user()->favorites()->detach($id);
+
+        return back();
+    }
+
+ /**
+ * Determine whether a document has been marked as favorite by a user.
+ *
+ */
+    public function ListFavorites()
+    {
+        $favorites = Favorite::where('user_id', Auth::id())->get();
+
+        return view('my_favorites')->with('favorites',$favorites);
+    }
 }

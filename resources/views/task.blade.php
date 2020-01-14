@@ -1,21 +1,19 @@
-@extends('layouts.app')
+@extends('layouts.apps')
 @section('content')
 
-<div class="row">
+<div class="row" style=" margin: 0 10px; border-style: groove;">
   <div class="col-sm-2">
   <h6 class="dropdown-header">My tasks</h6>
   <input class="dropdown-item" type="button" id="Active" value="Active" onclick="ShowHide(this.value)">
    <input class="dropdown-item" type="button" id="Completed" value="Completed" onclick="ShowHide(this.value)">
 
-  <div class="dropdown-divider"></div>
-
-  
+  <div class="dropdown-divider"></div>  
 </div> 
 
 
 
 <div class="col-sm-8" id="active" style="display: inline; margin: 20px 0px 0px 30px" >
-  <h4>My Tasks</h4><hr>
+  <h4><i class="fas fa-tasks"></i>&nbsp;My Tasks</h4><hr>
 
   <!--- Messages Info --->
     @if(!empty(Session::get('update-wf')))
@@ -33,14 +31,13 @@
       @endif
 
   <h6>Active Tasks</h6>
-    <div id="items" style="display: inline;">
- 
-        <i class="list-group-item">
+    <div id="items" style="display: inline; " >
+      <i class="list-group-item">
             {{csrf_field()}}
 
-    <table width="100%" name="doc_info" frame="hsides" rules="rows">
-      @if (count($workflows_actives) >0)
-            @foreach($workflows_actives as $workflows_active)
+        <table width="100%" name="doc_info" frame="hsides" rules="rows">
+          @if (count($workflows_actives) >0)
+             @foreach($workflows_actives as $workflows_active)
           <tr style="height: 90px">
             <td width="10%"><i class="fa fa-list" aria-hidden="true"></i></td>
             <td width="90%"><a href="task/{{$workflows_active->id}}" id="task_active" style="color: black; font-size: 17px">{{$workflows_active->description}}</a><br>
@@ -174,7 +171,7 @@
  
 <div class="col-sm-8" id="completed" style="display: none; margin: 20px 0px 0px 30px" >
   
-  <h4>My Tasks</h4><hr>
+  <h4><i class="fas fa-tasks"></i>&nbsp;My Tasks</h4><hr>
   <h6>Completed Tasks</h6>
     <div id="items" style="display: inline;">
  
